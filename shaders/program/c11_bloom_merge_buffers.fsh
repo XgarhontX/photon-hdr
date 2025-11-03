@@ -25,7 +25,7 @@ void main() {
 	int tile_index = int(-log2(1.0 - uv.x));
 
 	if ((tile_index & 1) == 1) {
-		bloom_tiles = texelFetch(colortex0, ivec2(gl_FragCoord.xy), 0).rgb;
+		bloom_tiles = max(vec3(0), texelFetch(colortex0, ivec2(gl_FragCoord.xy), 0).rgb);
 	} else {
 		discard;
 	}

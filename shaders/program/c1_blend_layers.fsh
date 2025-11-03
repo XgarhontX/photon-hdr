@@ -262,6 +262,7 @@ void main() {
 #endif
 
 	fragment_color = texture(colortex0, refracted_uv * taau_render_scale).rgb;
+	fragment_color = max(vec3(0), fragment_color);
 	vec3 original_color = fragment_color;
 
 	// Draw DH water

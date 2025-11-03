@@ -81,7 +81,7 @@ void main() {
 
 	for (int i = 0; i < DOF_SAMPLES; ++i) {
 		vec2 offset = vogel_disk_sample(i, DOF_SAMPLES, theta);
-		scene_color += textureLod(colortex0, clamp(vec2(uv + offset * CoC), vec2(0.0), vec2(1.0 - 2.0 * view_pixel_size * rcp(taau_render_scale))) * taau_render_scale, 0).rgb;
+		scene_color += max(vec3(0), textureLod(colortex0, clamp(vec2(uv + offset * CoC), vec2(0.0), vec2(1.0 - 2.0 * view_pixel_size * rcp(taau_render_scale))) * taau_render_scale, 0).rgb);
 	}
 
 	scene_color *= rcp(DOF_SAMPLES);

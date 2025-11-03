@@ -64,7 +64,7 @@ void main() {
 		ivec2 closest_bounds_max = ivec2(view_res * (closest_offset + closest_scale) - 1);
 
 		// Clamp to closest tile
-		bloom_tiles = texelFetch(colortex0, clamp(texel, closest_bounds_min, closest_bounds_max), 0).rgb;
+		bloom_tiles = max(vec3(0), texelFetch(colortex0, clamp(texel, closest_bounds_min, closest_bounds_max), 0).rgb);
 
 		return;
 	}
@@ -77,7 +77,7 @@ void main() {
 	for (int i = -4; i <= 4; ++i) {
 		ivec2 pos    = texel + ivec2(0, i);
 		float weight = binomial_weights_9[abs(i)] * float(clamp(pos.y, bounds_min.y + 2, bounds_max.y - 2) == pos.y);
-		bloom_tiles  += texelFetch(colortex0, pos, 0).rgb * weight;
+		bloom_tiles  += max(vec3(0), texelFetch(colortex0, pos, 0).rgb * weight);
 		weight_sum   += weight;
 	}
 

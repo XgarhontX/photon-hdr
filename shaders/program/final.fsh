@@ -62,6 +62,10 @@ ivec2 debug_text_position = ivec2(0, int(viewHeight) / debug_text_scale);
 #include "/include/misc/debug_weather.glsl"
 #endif
 
+#define RENODX_WORKING_COLORSPACE RENODX_AP1
+#define RENODX_SCALING_DEFAULT RENODX_SCALING_PERCHANNEL
+#include "/renodx.glsl"
+
 vec3 min_of(vec3 a, vec3 b, vec3 c, vec3 d, vec3 f) {
 	return min(a, min(b, min(c, min(d, f))));
 }
@@ -74,7 +78,11 @@ vec3 max_of(vec3 a, vec3 b, vec3 c, vec3 d, vec3 f) {
 // https://github.com/GPUOpen-Effects/FidelityFX-CAS
 vec3 cas_filter(sampler2D sampler, ivec2 texel, const float sharpness) {
 #ifndef CAS
-	return display_eotf(texelFetch(sampler, texel, 0).rgb);
+	#ifndef RENODX_ENABLED
+		return display_eotf(texelFetch(sampler, texel, 0).rgb);
+	#else
+		return SrgbEncodeSafe(texelFetch(sampler, texel, 0).rgb);
+	#endif
 #endif
 
 	// Fetch 3x3 neighborhood
@@ -91,7 +99,8 @@ vec3 cas_filter(sampler2D sampler, ivec2 texel, const float sharpness) {
 	vec3 h = texelFetch(sampler, texel + ivec2( 0,  1), 0).rgb;
 	vec3 i = texelFetch(sampler, texel + ivec2( 1,  1), 0).rgb;
 
-    // Convert to sRGB before performing CAS
+  // Convert to sRGB before performing CAS
+	#ifndef RENODX_ENABLED
     a = display_eotf(a);
     b = display_eotf(b);
     c = display_eotf(c);
@@ -101,6 +110,17 @@ vec3 cas_filter(sampler2D sampler, ivec2 texel, const float sharpness) {
     g = display_eotf(g);
     h = display_eotf(h);
     i = display_eotf(i);
+	#else
+  	a = SrgbEncodeSafe(a);
+  	b = SrgbEncodeSafe(b);
+  	c = SrgbEncodeSafe(c);
+  	d = SrgbEncodeSafe(d);
+  	e = SrgbEncodeSafe(e);
+  	f = SrgbEncodeSafe(f);
+  	g = SrgbEncodeSafe(g);
+  	h = SrgbEncodeSafe(h);
+  	i = SrgbEncodeSafe(i);
+	#endif
 
 	// Soft min and max. These are 2x bigger (factored out the extra multiply)
 	vec3 min_color  = min_of(d, e, f, b, h);
@@ -119,7 +139,12 @@ vec3 cas_filter(sampler2D sampler, ivec2 texel, const float sharpness) {
 	// w 1 w
 	// 0 w 0
 	vec3 weight_sum = 1.0 + 4.0 * w;
+
+#ifndef RENODX_ENABLED
 	return clamp01((b + d + f + h) * w + e) / weight_sum;
+#else
+	return ((b + d + f + h) * w + e) / weight_sum;
+#endif
 }
 
 void draw_iris_required_error_message() {
@@ -144,21 +169,27 @@ void main() {
 	return;
 #endif
 
-    ivec2 texel = ivec2(gl_FragCoord.xy);
+  ivec2 texel = ivec2(gl_FragCoord.xy);
 
 	if (abs(MC_RENDER_QUALITY - 1.0) < 0.01) {
 		fragment_color = cas_filter(colortex0, texel, CAS_INTENSITY * 2.0 - 1.0);
 	} else {
 		fragment_color = catmull_rom_filter_fast_rgb(colortex0, uv, 0.6);
-	    fragment_color = display_eotf(fragment_color);
+		#ifndef RENODX_ENABLED
+	  	fragment_color = display_eotf(fragment_color);
+		#else
+	  	fragment_color = SrgbEncodeSafe(fragment_color);
+		#endif
 	}
 
+#ifndef RENODX_ENABLED
 	fragment_color = dither_8bit(fragment_color, bayer16(vec2(texel)));
+#endif
 
 #if   DEBUG_VIEW == DEBUG_VIEW_SAMPLER
 	if (clamp(texel, ivec2(0), ivec2(textureSize(DEBUG_SAMPLER, 0))) == texel) {
 		fragment_color = texelFetch(DEBUG_SAMPLER, texel, 0).rgb;
-		fragment_color = display_eotf(fragment_color);
+		fragment_color = SrgbEncodeSafe(fragment_color);
 	}
 #elif DEBUG_VIEW == DEBUG_VIEW_WEATHER 
 	debug_weather(fragment_color);
@@ -200,6 +231,9 @@ void main() {
 		fragment_color = texture(shadowtex0, uv).rgb;
 	}
 #endif
+
+	//RenderIntermediatePass
+	fragment_color = RenderIntermediatePass(fragment_color);
 }
 
 #include "/include/buffers.glsl"
