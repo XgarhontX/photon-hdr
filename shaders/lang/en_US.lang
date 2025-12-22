@@ -750,3 +750,136 @@ option.BOX_EMISSION             = Emission
 option.BOX_EMISSION.comment     = Scales color past 1. Requires bloom.
 option.BOX_LINE_WIDTH           = Line Width
 
+# RenoDX Screens
+screen.renodx = RenoDX
+screen.renodx_reinhard = Reinhard Settings
+screen.renodx_reinhard.comment = Cleanly roll off highlights to peak.
+screen.renodx_aces = ACES Settings
+screen.renodx_aces.comment = Contrast and blowout via ACES color space.
+screen.renodx_gt = Gran Turismo Sport Settings
+screen.renodx_gt.comment = ACES-like contrast, very clippy, without hue shifting blowout.
+screen.renodx_gt7 = Gran Turismo 7 Settings
+screen.renodx_gt7.comment = ACES-like contrast, very clippy, and very vibrant. Has customizable blowout. Clamps BT2020 (which is plenty wcg).
+screen.renodx_hermite = Hermite Spline Settings
+screen.renodx_hermite.comment = Fixed spline with toe and shoulder.
+
+# RenoDX Main
+option.RENODX_ENABLED = Enabled
+option.RENODX_ENABLED.comment = Enable HDR.
+
+option.RENODX_UI_BRIGHTNESS = UI Brightness
+option.RENODX_UI_BRIGHTNESS.comment = In nits, remember to match in the ReShade effect settings!
+
+option.RENODX_GAME_BRIGHTNESS = Game Brightness
+option.RENODX_GAME_BRIGHTNESS.comment = In nits, aka paper white.
+
+option.RENODX_PEAK_BRIGHTNESS = Peak Brightness
+option.RENODX_PEAK_BRIGHTNESS.comment = Maximum brightness in nits.
+
+option.RENODX_CLAMP_COLORSPACE = Color Space Clamp
+option.RENODX_CLAMP_COLORSPACE.comment = Clamp right at final output.
+value.RENODX_CLAMP_COLORSPACE.RENODX_NONE    = None
+value.RENODX_CLAMP_COLORSPACE.RENODX_BT709   = BT709
+value.RENODX_CLAMP_COLORSPACE.RENODX_BT2020  = BT2020
+value.RENODX_CLAMP_COLORSPACE.RENODX_AP1     = AP1
+
+option.RENODX_GAMMA = Gamma Correction
+option.RENODX_GAMMA.comment = Apply gamma correction in working color space before tonemapping. Turn off EOTF Emulation if using.
+value.RENODX_GAMMA.RENODX_GAMMA_NONE = Off
+value.RENODX_GAMMA.RENODX_GAMMA_22  = 2.2
+value.RENODX_GAMMA.RENODX_GAMMA_24 = 2.4
+
+option.RENODX_SATURATION = Saturation
+option.RENODX_SATURATION.comment = OKLab saturation, in percentage. 100 is disabled.
+
+# RenoDX Debug
+option.RENODX_DEBUG = Debug Output
+value.RENODX_DEBUG.RENODX_DEBUG_NONE = None
+value.RENODX_DEBUG.RENODX_DEBUG_UNTONEMAPPED = Untonemapped
+value.RENODX_DEBUG.RENODX_DEBUG_TONEMAPPED = Tonemapped
+value.RENODX_DEBUG.RENODX_DEBUG_SPLIT = Untonemapped / Tonemapped
+
+option.RENODX_WORKINGCOLORSPACE = Working Color Space
+option.RENODX_WORKINGCOLORSPACE.comment = The color space of the shaderpack's rendering pipeline.
+
+# RenoDX Upgrade
+option.RENODX_UPGRADE_ENABLED = Upgrade Tone Map (BT709 Clamp)
+option.RENODX_UPGRADE_ENABLED.comment = Map SDR chroma on HDR luma.
+
+option.RENODX_UPGRADE_AMOUNT = Upgrade Amount
+option.RENODX_UPGRADE_AMOUNT.comment = How much should the HDR color be influenced by the SDR?
+
+option.RENODX_UPGRADE_AUTO = Upgrade Auto Correct
+option.RENODX_UPGRADE_AUTO.comment = How much should the HDR color be corrected by the SDR?
+
+# RenoDX HDR Tone Map
+option.RENODX_EXPOSURE = Exposure
+option.RENODX_EXPOSURE.comment = Mutltiplier on color right before HDR Tone Map.
+
+value.RENODX_SCALING.RENODX_SCALING_Y = Luminance
+value.RENODX_SCALING.RENODX_SCALING_PERCHANNEL = Per Channel
+value.RENODX_SCALING.RENODX_SCALING_DEFAULT = Default
+option.RENODX_SCALING = Scaling
+option.RENODX_SCALING.comment = Run the tonemapper for all rgb channels or just the luminance (y) value? If Upgrading, choose Luminance to perserve Upgraded chroma.
+
+option.RENODX_HDRTONEMAP_TYPE = HDR Tone Map Type
+option.RENODX_HDRTONEMAP_TYPE.comment = Read tooltip of each!
+value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_OFF = Off
+value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_REINHARD = Reinhard
+value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_ACES = ACES
+value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_GT = Gran Turismo Sport
+value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_HERMITE = Hermite Spline
+value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_GT7 = Gran Turismo 7
+value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_DEFAULT = Default
+
+# RenoDX Reinhard
+option.RENODX_REINHARD_WHITE_CLIP = White Clip Threshold
+option.RENODX_REINHARD_WHITE_CLIP.comment = Start the shoulder sooner, creating clip. Arbitrary value, dependent on exposure.
+
+# RenoDX ACES
+option.RENODX_ACES_RGC = Gamut Compression Blowout
+option.RENODX_ACES_RGC.comment = Compressed color gamut, causing the ACES hue shift blowout.
+
+option.RENODX_ACES_RRT = Reference Rendering Transform
+option.RENODX_ACES_RRT.comment = Prepare colors for Output Device Transform (which is when it is truly tone mapped).
+
+option.RENODX_ACES_MIDGRAY = Mid Gray
+option.RENODX_ACES_MIDGRAY.comment = Mid gray output target.
+
+# RenoDX GT
+option.RENODX_GT_A = Contrast
+option.RENODX_GT_A.comment = Effectively pow(color, contrast).
+
+option.RENODX_GT_M = Linear Section Start (Mid Gray)
+option.RENODX_GT_M.comment = Aka the end of toe.
+
+option.RENODX_GT_L = Linear Section Length
+option.RENODX_GT_L.comment = The length of the linear section before shoulder.
+
+option.RENODX_GT_C = Toe Contrast
+option.RENODX_GT_C.comment = How aggressive should toe pull colors to black?
+
+option.RENODX_GT_B = Black Floor Raise
+option.RENODX_GT_B.comment = Raises the black floor.
+
+# RenoDX GT7
+option.RENODX_GT7_A = White Clip Strength
+option.RENODX_GT7_A.comment = Mask to clip highlights.
+
+option.RENODX_GT7_M = Gray Point
+option.RENODX_GT7_M.comment = Gray point for toe end.
+
+option.RENODX_GT7_L = Linear Section Length
+option.RENODX_GT7_L.comment = The length of the linear section before shoulder.
+
+option.RENODX_GT7_C = Toe Contrast
+option.RENODX_GT7_C.comment = How aggressive should toe pull colors to black.
+
+option.RENODX_GT7_BLOW_AMOUNT = Blowout Amount
+option.RENODX_GT7_BLOW_AMOUNT.comment = Blend intensity of chroma blowout.
+
+option.RENODX_GT7_BLOW_START = Blowout Start
+option.RENODX_GT7_BLOW_START.comment = Start of chroma blowout.
+
+option.RENODX_GT7_BLOW_END = Blowout End
+option.RENODX_GT7_BLOW_END.comment = End of chroma blowout.

@@ -10,9 +10,10 @@
 */
 
 #include "/include/global.glsl"
+#include "/renodx.glsl"
 
-layout(location = 0) out vec3 bloom_input;
-layout(location = 1) out vec4 result;
+layout (location = 0) out vec3 bloom_input;
+layout (location = 1) out vec4 result;
 
 /* RENDERTARGETS: 0,5 */
 
@@ -93,11 +94,20 @@ vec3 max_of(vec3 a, vec3 b, vec3 c, vec3 d, vec3 f) {
     return max(a, max(b, max(c, max(d, f))));
 }
 
-// Invertible tonemapping operator (Reinhard) applied before blending the
-// current and previous frames Improves the appearance of emissive objects
-vec3 reinhard(vec3 rgb) { return rgb / (rgb + 1.0); }
+// Invertible tonemapping operator (Reinhard) applied before blending the current and previous frames
+// Improves the appearance of emissive objects
+#ifndef TAAU
+	#define TAA_REINHARD_MAX 3.1
+#else
+	#define TAA_REINHARD_MAX 1.0
+#endif
+vec3 reinhard(vec3 rgb) {
+	return Reinhard(rgb, TAA_REINHARD_MAX);
+}
 
-vec3 reinhard_inverse(vec3 rgb) { return rgb / (1.0 - rgb); }
+vec3 reinhard_inverse(vec3 rgb) {
+	return ReinhardInv(rgb, TAA_REINHARD_MAX);
+}
 
 // Estimates the closest fragment in a 5x5 radius with 5 samples in a cross
 // pattern Improves reprojection for objects in motion

@@ -54,13 +54,12 @@ void main() {
     bloom_tiles = vec3(0.0);
     float weight_sum = 0.0;
 
-    for (int i = -4; i <= 4; ++i) {
-        ivec2 pos = texel + ivec2(i, 0);
-        float weight = binomial_weights_9[abs(i)] *
-            float(clamp(pos.x, bounds_min.x + 2, bounds_max.x - 2) == pos.x);
-        bloom_tiles += texelFetch(colortex0, pos, 0).rgb * weight;
-        weight_sum += weight;
-    }
+	for (int i = -4; i <= 4; ++i) {
+		ivec2 pos    = texel + ivec2(i, 0);
+		float weight = binomial_weights_9[abs(i)] * float(clamp(pos.x, bounds_min.x + 2, bounds_max.x - 2) == pos.x);
+		bloom_tiles  += max(vec3(0), texelFetch(colortex0, pos, 0).rgb * weight);
+		weight_sum   += weight;
+	}
 
     bloom_tiles /= weight_sum;
 }

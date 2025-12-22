@@ -63,41 +63,28 @@ void main() {
     }
 #endif
 
-    if (depth < hand_depth) {
-        scene_color = texelFetch(colortex0, texel, 0).rgb;
-        return;
-    };
+	if (depth < hand_depth) {
+		scene_color = texelFetch(colortex0, texel, 0).rgb;
+		return;
+	};
 
-    // Calculate vogel disk rotation
-    float theta = texelFetch(noisetex, texel & 511, 0).b;
-    theta = r1(frameCounter, theta);
-    theta *= tau;
+	// Calculate vogel disk rotation
+	float theta  = texelFetch(noisetex, texel & 511, 0).b;
+	      theta  = r1(frameCounter, theta);
+	      theta *= tau;
 
-    // Calculate circle of confusion
-    float focus = DOF_FOCUS < 0.0
-        ? centerDepthSmooth
-        : view_to_screen_space_depth(gbufferProjection, DOF_FOCUS);
-    vec2 CoC = min(abs(depth - focus), 0.1) * (DOF_INTENSITY * 0.2 / 1.37) *
-        vec2(1.0, aspectRatio) * gbufferProjection[1][1];
+	// Calculate circle of confusion
+	float focus = DOF_FOCUS < 0.0 ? centerDepthSmooth : view_to_screen_space_depth(gbufferProjection, DOF_FOCUS);
+	vec2 CoC = min(abs(depth - focus), 0.1) * (DOF_INTENSITY * 0.2 / 1.37) * vec2(1.0, aspectRatio) * gbufferProjection[1][1];
 
-    scene_color = vec3(0.0);
+	scene_color = vec3(0.0);
 
-    for (int i = 0; i < DOF_SAMPLES; ++i) {
-        vec2 offset = vogel_disc_sample(i, DOF_SAMPLES, theta);
-        scene_color +=
-            textureLod(
-                colortex0,
-                clamp(
-                    vec2(uv + offset * CoC),
-                    vec2(0.0),
-                    vec2(1.0 - 2.0 * view_pixel_size * rcp(taau_render_scale))
-                ) * taau_render_scale,
-                0
-            )
-                .rgb;
-    }
+	for (int i = 0; i < DOF_SAMPLES; ++i) {
+		vec2 offset = vogel_disk_sample(i, DOF_SAMPLES, theta);
+		scene_color += max(vec3(0), textureLod(colortex0, clamp(vec2(uv + offset * CoC), vec2(0.0), vec2(1.0 - 2.0 * view_pixel_size * rcp(taau_render_scale))) * taau_render_scale, 0).rgb);
+	}
 
-    scene_color *= rcp(DOF_SAMPLES);
+	scene_color *= rcp(DOF_SAMPLES);
 }
 
 #ifndef DOF

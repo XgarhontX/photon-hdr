@@ -30,9 +30,12 @@ vec3 max_of(vec3 a, vec3 b, vec3 c, vec3 d, vec3 f) {
     return max(a, max(b, max(c, max(d, f))));
 }
 
-// Invertible tonemapping operator (Reinhard) applied before blending the
-// current and previous frames Improves the appearance of emissive objects
-vec3 reinhard(vec3 rgb) { return rgb / (rgb + 1.0); }
+// Invertible tonemapping operator (Reinhard) applied before blending the current and previous frames
+// Improves the appearance of emissive objects
+vec3 reinhard(vec3 rgb) {
+	rgb = max(vec3(0), rgb);
+	return rgb / (rgb + 1.0);
+}
 
 void main() {
     ivec2 texel = ivec2(gl_FragCoord.xy);

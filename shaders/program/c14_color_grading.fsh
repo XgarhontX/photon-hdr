@@ -44,6 +44,12 @@ uniform vec2 view_pixel_size;
 #include "/include/utility/bicubic.glsl"
 #include "/include/utility/color.glsl"
 
+//#define RENODX_UPGRADE_ENABLED
+#define RENODX_SCALING_DEFAULT RENODX_SCALING_PERCHANNEL
+#define RENODX_WORKING_COLORSPACE RENODX_AP1
+#define RENODX_HDRTONEMAP_TYPE_DEFAULT RENODX_HDRTONEMAP_TYPE_REINHARD
+#include "/renodx.glsl"
+
 // Bloom
 
 vec3 get_bloom(out vec3 fog_bloom) {
@@ -212,26 +218,41 @@ void main() {
     scene_color *= vignette(uv);
 #endif
 
-    scene_color = grade_input(scene_color);
+	scene_color = grade_input(scene_color);
+	vec3 untonemapped_color = AP1_TO_BT709_MAT * scene_color;
 
-#ifdef TONEMAP_COMPARISON
-    scene_color =
-        uv.x < 0.5 ? tonemap_left(scene_color) : tonemap_right(scene_color);
-#else
-    scene_color = tonemap(scene_color);
+#ifdef RENODX_UPGRADE_ENABLED
+	//Tonemap SDR
+	#ifdef TONEMAP_COMPARISON //in ap1
+		scene_color = vec3(0)/* uv.x < 0.5 ? tonemap_left(scene_color) : tonemap_right(scene_color) */;
+	#else
+		//vanilla
+		scene_color = tonemap(scene_color); 
+
+		//hdr exposure based on sdr tonampped mid gray
+		{
+			float exp1 = YFromBT709(tonemap(vec3(0.18f)));
+			untonemapped_color *= exp1 / 0.18f;
+		}
+	#endif //out bt2020 on some
+
+	//grade_output
+	scene_color = clamp01(scene_color * working_to_display_color); //to and clamp bt709
+	scene_color = grade_output(scene_color); //inout bt709 clamped
+
+	// Tonemap plot
+	#if 0 
+		const float scale = 2.0;
+		vec2 uv_scaled = uv * scale * vec2(1.0, 1.0 / aspectRatio);
+		float x = uv_scaled.x;
+		float y = tonemap(vec3(x)).x;
+
+		if (abs(uv_scaled.x - 1.0) < 0.001 * scale) scene_color = vec3(1.0, 0.0, 0.0);
+		if (abs(uv_scaled.y - 1.0) < 0.001 * scale) scene_color = vec3(1.0, 0.0, 0.0);
+		if (abs(uv_scaled.y - y) < 0.001 * scale) scene_color = vec3(1.0);
+	#endif
 #endif
 
-    scene_color = clamp01(scene_color * working_to_display_color);
-    scene_color = grade_output(scene_color);
-
-#if 0 // Tonemap plot
-	const float scale = 2.0;
-	vec2 uv_scaled = uv * scale * vec2(1.0, 1.0 / aspectRatio);
-	float x = uv_scaled.x;
-	float y = tonemap(vec3(x)).x;
-
-	if (abs(uv_scaled.x - 1.0) < 0.001 * scale) scene_color = vec3(1.0, 0.0, 0.0);
-	if (abs(uv_scaled.y - 1.0) < 0.001 * scale) scene_color = vec3(1.0, 0.0, 0.0);
-	if (abs(uv_scaled.y - y) < 0.001 * scale) scene_color = vec3(1.0);
-#endif
+	//ToneMapPass
+	scene_color = ToneMapPass(untonemapped_color, scene_color, uv);
 }
