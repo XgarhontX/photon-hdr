@@ -13,12 +13,10 @@
 #include "/include/global.glsl"
 
 #define bloom_tile_scale(i) 0.5 * exp2(-(i))
-#define bloom_tile_offset(i) vec2(            \
-	1.0 - exp2(-(i)),                       \
-	float((i) & 1) * (1.0 - 0.5 * exp2(-(i))) \
-)
+#define bloom_tile_offset(i) \
+    vec2(1.0 - exp2(-(i)), float((i) & 1) * (1.0 - 0.5 * exp2(-(i))))
 
-layout (location = 0) out vec3 bloom_tile;
+layout(location = 0) out vec3 bloom_tile;
 
 /* RENDERTARGETS: 0 */
 
@@ -30,17 +28,17 @@ const float tile_scale = bloom_tile_scale(BLOOM_TILE_INDEX);
 const vec2 tile_offset = bloom_tile_offset(BLOOM_TILE_INDEX);
 
 #if BLOOM_TILE_INDEX == 0
-	// Initial tile reads TAA output directly
-	const float src_tile_scale = 1.0;
-	const vec2 src_tile_offset = vec2(0.0);
-	uniform sampler2D colortex5;
-	#define SRC_SAMPLER colortex5
+// Initial tile reads TAA output directly
+const float src_tile_scale = 1.0;
+const vec2 src_tile_offset = vec2(0.0);
+uniform sampler2D colortex5;
+#define SRC_SAMPLER colortex5
 #else
-	// Subsequent tiles read from colortex0
-	const float src_tile_scale = bloom_tile_scale(BLOOM_TILE_INDEX - 1);
-	const vec2 src_tile_offset = bloom_tile_offset(BLOOM_TILE_INDEX - 1);
-	uniform sampler2D colortex0;
-	#define SRC_SAMPLER colortex0
+// Subsequent tiles read from colortex0
+const float src_tile_scale = bloom_tile_scale(BLOOM_TILE_INDEX - 1);
+const vec2 src_tile_offset = bloom_tile_offset(BLOOM_TILE_INDEX - 1);
+uniform sampler2D colortex0;
+#define SRC_SAMPLER colortex0
 #endif
 
 void main() {
@@ -68,4 +66,3 @@ void main() {
 
 	bloom_tile.rgb = max(vec3(0), bloom_tile.rgb);
 }
-

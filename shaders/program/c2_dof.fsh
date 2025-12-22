@@ -11,7 +11,7 @@
 
 #include "/include/global.glsl"
 
-layout (location = 0) out vec3 scene_color;
+layout(location = 0) out vec3 scene_color;
 
 /* RENDERTARGETS: 0 */
 
@@ -42,25 +42,25 @@ uniform int frameCounter;
 uniform vec2 view_pixel_size;
 uniform vec2 taa_offset;
 
-#include "/include/misc/distant_horizons.glsl"
+#include "/include/misc/lod_mod_support.glsl"
 #include "/include/utility/random.glsl"
 #include "/include/utility/sampling.glsl"
 #include "/include/utility/space_conversion.glsl"
 
 void main() {
-	ivec2 texel = ivec2(gl_FragCoord.xy);
+    ivec2 texel = ivec2(gl_FragCoord.xy);
 
-	float depth = texelFetch(depthtex0, texel, 0).x;
+    float depth = texelFetch(depthtex0, texel, 0).x;
 
-#ifdef DISTANT_HORIZONS
-	float depth_dh = texelFetch(dhDepthTex, texel, 0).x;
+#ifdef LOD_MOD_ACTIVE
+    float depth_lod = texelFetch(lod_depth_tex, texel, 0).x;
 
-	if (is_distant_horizons_terrain(depth, depth_dh)) {
-		depth = view_to_screen_space_depth(
-			gbufferProjection,
-			screen_to_view_space_depth(dhProjectionInverse, depth_dh)
-		);
-	}
+    if (is_lod_terrain(depth, depth_lod)) {
+        depth = view_to_screen_space_depth(
+            gbufferProjection,
+            screen_to_view_space_depth(lod_projection_matrix_inverse, depth_lod)
+        );
+    }
 #endif
 
 	if (depth < hand_depth) {
@@ -87,6 +87,6 @@ void main() {
 	scene_color *= rcp(DOF_SAMPLES);
 }
 
-#ifndef DOF 
-	#error "This program should be disabled if Depth of Field is disabled"
+#ifndef DOF
+#error "This program should be disabled if Depth of Field is disabled"
 #endif
