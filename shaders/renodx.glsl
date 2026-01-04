@@ -609,22 +609,40 @@ float ComputeReinhardExtendableScale(float w, float p, float m, float x, float y
   return p * (w * w * y - (p * x * x)) / (w * w * x * (p - y));
 }
 
-vec3 ReinhardScalableExtended(vec3 x, float white_max, float x_max, float x_min, float gray_in, float gray_out) {
-  float exposure = ComputeReinhardExtendableScale(white_max, x_max, x_min, gray_in, gray_out);
-  vec3 extended = ReinhardExtended(x * exposure, white_max * exposure, x_max);
-  return min(extended, x_max);
+// vec3 ReinhardScalableExtended(vec3 x, float white_max, float x_max, float x_min, float gray_in, float gray_out) {
+//   float exposure = ComputeReinhardExtendableScale(white_max, x_max, x_min, gray_in, gray_out);
+//   vec3 extended = ReinhardExtended(x * exposure, white_max * exposure, x_max);
+//   return min(extended, x_max);
+// }
+// vec3 ReinhardScalableExtendedY(vec3 x, float white_max, float x_max, float x_min, float gray_in, float gray_out) {
+//   float y0 = YFromBT709(x);
+//   float y1 = y0;
+// 
+//   float exposure = ComputeReinhardExtendableScale(white_max, x_max, x_min, gray_in, gray_out);
+//   float extended = ReinhardExtended(y1 * exposure, white_max * exposure, x_max);
+//   y1 = min(extended, x_max);
+// 
+//   //color_output = input_color * (y_original > 0 ? (y_new / y_original) : 0);
+//   x = x * (y0 > 0 ? (y1 / y0) : 0);
+//   return x;
+// }
+vec3 ReinhardPiecewiseExtended(vec3 x, float white_max, float x_max, float shoulder) //From Musa (I think)
+{
+   const float x_min = 0.f;
+   float exposure = ComputeReinhardExtendableScale(white_max, x_max, x_min, shoulder, shoulder);
+   vec3 extended = ReinhardExtended(x * exposure, white_max * exposure, x_max);
+   extended = min(extended, x_max);
+
+   return mix(x, extended, step(shoulder, x));
 }
-vec3 ReinhardScalableExtendedY(vec3 x, float white_max, float x_max, float x_min, float gray_in, float gray_out) {
-  float y0 = YFromBT709(x);
-  float y1 = y0;
+float ReinhardPiecewiseExtended(float x, float white_max, float x_max, float shoulder) //From Musa (I think)
+{
+   const float x_min = 0.f;
+   float exposure = ComputeReinhardExtendableScale(white_max, x_max, x_min, shoulder, shoulder);
+   float extended = ReinhardExtended(x * exposure, white_max * exposure, x_max);
+   extended = min(extended, x_max);
 
-  float exposure = ComputeReinhardExtendableScale(white_max, x_max, x_min, gray_in, gray_out);
-  float extended = ReinhardExtended(y1 * exposure, white_max * exposure, x_max);
-  y1 = min(extended, x_max);
-
-  //color_output = input_color * (y_original > 0 ? (y_new / y_original) : 0);
-  x = x * (y0 > 0 ? (y1 / y0) : 0);
-  return x;
+   return mix(x, extended, step(shoulder, x));
 }
 
 vec3 ToneMapPass_Reinhard(vec3 color) {
@@ -633,16 +651,17 @@ vec3 ToneMapPass_Reinhard(vec3 color) {
   color = WorkingGammaCorrection(color);
 
   //setup
-  const float nits_peak = RENODX_PEAK_BRIGHTNESS. / RENODX_GAME_BRIGHTNESS.;
-  const float mid_gray_value = 0.18f;
-  const float mid_gray_nits = 0.18f;
+  const float peak = (RENODX_PEAK_BRIGHTNESS. / RENODX_GAME_BRIGHTNESS.);
+  const float shoulder = (RENODX_SHOULDER_START. / RENODX_GAME_BRIGHTNESS.);
   const float white_clip = RENODX_REINHARD_WHITE_CLIP;
 
   //do
   #if RENODX_SCALING == RENODX_SCALING_Y
-    color = ReinhardScalableExtendedY(color, white_clip, nits_peak, 0, mid_gray_value, mid_gray_nits);
+    float y = YFromBT709(color);
+    float y1 = ReinhardPiecewiseExtended(y, white_clip, peak, shoulder);
+    color *= y1 / max(y, 0.000001);
   #else
-    color = ReinhardScalableExtended(color, white_clip, nits_peak, 0, mid_gray_value, mid_gray_nits);
+    color = ReinhardPiecewiseExtended(color, white_clip, peak, shoulder);
   #endif
 
   color = WorkingColorSpace_Decode(color);
@@ -2113,7 +2132,7 @@ RENODX_HDRTONEMAP_TYPE [renodx_reinhard] [renodx_aces] [renodx_gt] [renodx_gt7] 
 RENODX_DEBUG
 screen.renodx.columns = 1
 
-screen.renodx_reinhard = RENODX_SCALING RENODX_REINHARD_WHITE_CLIP 
+screen.renodx_reinhard = RENODX_SCALING RENODX_SHOULDER_START RENODX_REINHARD_WHITE_CLIP 
 screen.renodx_reinhard.columns = 1
 
 screen.renodx_aces = RENODX_ACES_RGC RENODX_ACES_RRT RENODX_ACES_MIDGRAY
