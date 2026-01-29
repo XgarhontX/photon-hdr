@@ -1,4 +1,10 @@
-<br><br>
+<h1 align = "center">HDR Installation</h1>
+
+* [Google Docs (Requiring SpecialK and ReShade)](https://docs.google.com/document/d/1obuYnRTlaqUpiqBq2P6V-_eXvRaSgTB6qboJaC4Fojk/edit?usp=sharing)
+
+[![HDR Screenshot](https://i.postimg.cc/fRMXjbQb/hdrpic-(1).png)](https://postimg.cc/xcFc9nCr)
+
+<br>
 
 <h1 align = "center">Photon Shaders</h1>
 
@@ -30,7 +36,8 @@
 
 ### Downloads
 * [Releases](https://modrinth.com/shader/photon-shader/versions) (recommended)
-* [Lastest commit](https://github.com/sixthsurge/photon/archive/refs/heads/main.zip)
+* [Stable](https://github.com/sixthsurge/photon/archive/refs/heads/iris-stable.zip)
+* [Unstable](https://github.com/sixthsurge/photon/archive/refs/heads/iris-unstable.zip)
 
 ## Features
 * Fully revamped sky, lighting and water 
@@ -51,7 +58,7 @@
 * Nvidia, AMD and Intel GPUs
 * Iris - version 1.5 and above
 * OptiFine - on Minecraft 1.16.5 and above
-* Photon is also compatible with [Distant Horizons](https://www.curseforge.com/minecraft/mc-mods/distant-horizons) and [Voxy](https://modrinth.com/mod/voxy)
+* Photon is also compatible with [Distant Horizons](https://www.curseforge.com/minecraft/mc-mods/distant-horizons) 
 * Apple Metal: Disable _SH Skylight_ and _Colored Shadows_
 
 ## Showcase videos
