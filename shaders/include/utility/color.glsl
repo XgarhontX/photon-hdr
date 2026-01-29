@@ -78,8 +78,8 @@ const mat3 rec2020_to_rec709 = rec2020_to_xyz * xyz_to_rec709;
 //   Transfer functions (gamma)
 // ------------------------------
 
-#define display_eotf srgb_eotf
-#define display_eotf_inv srgb_eotf_inv
+#define display_eotf gamma_2_eotf
+#define display_eotf_inv gamma_2_eotf_inv
 
 vec3 srgb_eotf(vec3 linear) { // linear -> sRGB
     return 1.14374 *
@@ -90,6 +90,14 @@ vec3 srgb_eotf_inv(vec3 srgb) { // sRGB -> linear
     return srgb *
         (srgb * (srgb * 0.305306011 + 0.682171111) +
          0.012522878); // https://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
+}
+
+vec3 gamma_2_eotf(vec3 linear) {
+    return sqrt(linear);
+}
+
+vec3 gamma_2_eotf_inv(vec3 gamma2) {
+    return gamma2 * gamma2;
 }
 
 // -------------------------------------------------

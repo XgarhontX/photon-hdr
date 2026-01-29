@@ -11,6 +11,10 @@
 
 #include "/include/global.glsl"
 
+#define RENODX_WORKING_COLORSPACE RENODX_AP1
+#define RENODX_SCALING_DEFAULT RENODX_SCALING_PERCHANNEL
+#include "/renodx.glsl"
+
 layout(location = 0) out vec3 fragment_color;
 
 in vec2 uv;
@@ -119,7 +123,7 @@ vec3 cas_filter(sampler2D sampler, ivec2 texel, const float sharpness) {
     // w 1 w
     // 0 w 0
     vec3 weight_sum = 1.0 + 4.0 * w;
-    return clamp01((b + d + f + h) * w + e) / weight_sum;
+    return /* clamp01 */((b + d + f + h) * w + e) / weight_sum;
 }
 
 void draw_iris_required_error_message() {
@@ -280,10 +284,10 @@ void main() {
             cas_filter(colortex0, texel, CAS_INTENSITY * 2.0 - 1.0);
     } else {
         fragment_color = catmull_rom_filter_fast_rgb(colortex0, uv, 0.6);
-        fragment_color = display_eotf(fragment_color);
+        fragment_color = display_eotf(fragment_color); 
     }
 
-    fragment_color = dither_8bit(fragment_color, bayer16(vec2(texel)));
+    // fragment_color = dither_8bit(fragment_color, bayer16(vec2(texel)));
 
 #if DEBUG_VIEW == DEBUG_VIEW_SAMPLER
     if (clamp(texel, ivec2(0), ivec2(textureSize(DEBUG_SAMPLER, 0))) == texel) {
@@ -336,6 +340,9 @@ void main() {
         fragment_color = texture(shadowtex0, uv).rgb;
     }
 #endif
+
+	//RenderIntermediatePass
+	fragment_color = RenderIntermediatePass(fragment_color);
 }
 
 #include "/include/buffers.glsl"
