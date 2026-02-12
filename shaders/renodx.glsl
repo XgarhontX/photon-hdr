@@ -431,22 +431,22 @@ vec3 GammeCorrectSafe_PowToSrgb(vec3 c, float gamma) {
 #define ScrgbEncode(x) (x / 80.)
 
 //// PQ ///////////////////////////////////////////////////////////////////////////
-//const vec3 M1 = vec3(2610.f / 16384.f);           // 0.1593017578125f;
-//const vec3 M2 = vec3(128.f * (2523.f / 4096.f));  // 78.84375f;
-//const vec3 C1 = vec3(3424.f / 4096.f);            // 0.8359375f;
-//const vec3 C2 = vec3(32.f * (2413.f / 4096.f));   // 18.8515625f;
-//const vec3 C3 = vec3(32.f * (2392.f / 4096.f));   // 18.6875f;
-//vec3 PqEncode(vec3 color, float scaling) {
-//  color *= (scaling / 10000.f);
-//  vec3 y_m1 = pow(color, M1);
-//  return pow((C1 + C2 * y_m1) / (1.f + C3 * y_m1), M2);
-//}
-//
-//vec3 PqDecode(vec3 color, float scaling) {
-//  vec3 e_m12 = pow(color, 1.f / M2);
-//  vec3 out_color = pow(max(0, e_m12 - C1) / (C2 - C3 * e_m12), 1.f / M1);
-//  return out_color * (10000.f / scaling);
-//}
+const vec3 M1 = vec3(2610.f / 16384.f);           // 0.1593017578125f;
+const vec3 M2 = vec3(128.f * (2523.f / 4096.f));  // 78.84375f;
+const vec3 C1 = vec3(3424.f / 4096.f);            // 0.8359375f;
+const vec3 C2 = vec3(32.f * (2413.f / 4096.f));   // 18.8515625f;
+const vec3 C3 = vec3(32.f * (2392.f / 4096.f));   // 18.6875f;
+vec3 PqEncode(vec3 color, float scaling) {
+ color *= (scaling / 10000.f);
+ vec3 y_m1 = pow(color, M1);
+ return pow((C1 + C2 * y_m1) / (1.f + C3 * y_m1), M2);
+}
+
+vec3 PqDecode(vec3 color, float scaling) {
+ vec3 e_m12 = pow(color, 1.f / M2);
+ vec3 out_color = pow(max(0, e_m12 - C1) / (C2 - C3 * e_m12), 1.f / M1);
+ return out_color * (10000.f / scaling);
+}
 
 // CorrectLuminance ///////////////////////////////////////////////////////////////////////////
 vec3 CorrectLuminance(vec3 color, float incorrect_y, float correct_y, float strength) {
@@ -2308,26 +2308,32 @@ vec3 RenderIntermediatePass(vec3 color) {
   // color = SrgbDecodeSafe(color);
   color *= color;
 
-  //AP1 to BT709
-  color = AP1_TO_BT709_MAT * max(vec3(0), color);
+//   //AP1 to BT709
+//   color = AP1_TO_BT709_MAT * max(vec3(0), color);
+// 
+//   //Intermediate Scaling
+//   color *= RENODX_GAME_BRIGHTNESS. / RENODX_UI_BRIGHTNESS.; //reshade effect invert this
+// 
+//   // //clamp color space
+//   // #if RENODX_CLAMP_COLORSPACE == RENODX_BT709
+//   //   color = max(vec3(0), color);
+//   // #elif RENODX_CLAMP_COLORSPACE == RENODX_BT2020
+//   //   color = BT2020_TO_BT709_MAT * max(vec3(0), BT709_TO_BT2020_MAT * color);
+//   // #elif RENODX_CLAMP_COLORSPACE == RENODX_AP1
+//   //   color = AP1_TO_BT709_MAT * max(vec3(0), BT709_TO_AP1_MAT * color);
+//   // #endif
+// 
+//   //clamp max nits
+//   // color = min(vec3(RENODX_PEAK_BRIGHTNESS / 80.), color);
+// 
+//   //Encode
+//   color = SrgbEncodeSafe(color); //to intermediate encoding
 
-  //Intermediate Scaling
-  color *= RENODX_GAME_BRIGHTNESS. / RENODX_UI_BRIGHTNESS.; //reshade effect invert this
+  //rrtt169 mod:
+  color = AP1_TO_BT2020_MAT * max(vec3(0), color); //to BT2020
+  color *= RENODX_GAME_BRIGHTNESS. / RENODX_UI_BRIGHTNESS.; //intermediate encoding (TODO: possible yet?)
+  color = PqEncode(color, 10000); //encode pq
 
-  // //clamp color space
-  // #if RENODX_CLAMP_COLORSPACE == RENODX_BT709
-  //   color = max(vec3(0), color);
-  // #elif RENODX_CLAMP_COLORSPACE == RENODX_BT2020
-  //   color = BT2020_TO_BT709_MAT * max(vec3(0), BT709_TO_BT2020_MAT * color);
-  // #elif RENODX_CLAMP_COLORSPACE == RENODX_AP1
-  //   color = AP1_TO_BT709_MAT * max(vec3(0), BT709_TO_AP1_MAT * color);
-  // #endif
-
-  //clamp max nits
-  // color = min(vec3(RENODX_PEAK_BRIGHTNESS / 80.), color);
-
-  //Encode
-  color = SrgbEncodeSafe(color); //to intermediate encoding
   return color;
 }
 
