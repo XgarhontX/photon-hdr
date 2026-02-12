@@ -2308,31 +2308,10 @@ vec3 RenderIntermediatePass(vec3 color) {
   // color = SrgbDecodeSafe(color);
   color *= color;
 
-//   //AP1 to BT709
-//   color = AP1_TO_BT709_MAT * max(vec3(0), color);
-// 
-//   //Intermediate Scaling
-//   color *= RENODX_GAME_BRIGHTNESS. / RENODX_UI_BRIGHTNESS.; //reshade effect invert this
-// 
-//   // //clamp color space
-//   // #if RENODX_CLAMP_COLORSPACE == RENODX_BT709
-//   //   color = max(vec3(0), color);
-//   // #elif RENODX_CLAMP_COLORSPACE == RENODX_BT2020
-//   //   color = BT2020_TO_BT709_MAT * max(vec3(0), BT709_TO_BT2020_MAT * color);
-//   // #elif RENODX_CLAMP_COLORSPACE == RENODX_AP1
-//   //   color = AP1_TO_BT709_MAT * max(vec3(0), BT709_TO_AP1_MAT * color);
-//   // #endif
-// 
-//   //clamp max nits
-//   // color = min(vec3(RENODX_PEAK_BRIGHTNESS / 80.), color);
-// 
-//   //Encode
-//   color = SrgbEncodeSafe(color); //to intermediate encoding
-
   //rrtt169 mod:
-  color = AP1_TO_BT2020_MAT * max(vec3(0), color); //to BT2020
+  color = max(vec3(0), AP1_TO_BT2020_MAT * color); //to BT2020 and clamp
   color *= RENODX_GAME_BRIGHTNESS. / RENODX_UI_BRIGHTNESS.; //intermediate encoding (TODO: possible yet?)
-  color = PqEncode(color, 10000); //encode pq
+  color = PqEncode(color, 203.); //encode pq 10000
 
   return color;
 }
