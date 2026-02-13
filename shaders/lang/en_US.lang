@@ -760,7 +760,6 @@ option.BOX_LINE_WIDTH           = Line Width
 
 
 
-
 # RenoDX Screens
 screen.renodx = RenoDX
 screen.renodx_reinhard = Reinhard Piecewise Settings
@@ -772,7 +771,7 @@ screen.renodx_gt.comment = ACES-like contrast, very clippy, without hue shifting
 screen.renodx_gt7 = Gran Turismo 7 Settings
 screen.renodx_gt7.comment = ACES-like contrast, very clippy, and very vibrant. Has customizable blowout. Clamps BT2020 (which is plenty wcg).
 screen.renodx_hermite = Hermite Spline Settings
-screen.renodx_hermite.comment = Scalable spline with toe and shoulder.
+screen.renodx_hermite.comment = Scalable spline, very natural.
 screen.renodx_hable = Uncharted 2 / Hable Settings
 screen.renodx_hable.comment = From Uncharted 2 by John Hable, with toe, lienar extended to HDR.
 screen.renodx_exproll = Exponential Roll-off Settings
@@ -799,19 +798,34 @@ option.RENODX_WHITE_CLIP.comment = Aka the expected maximum of color to tonemap.
 
 option.RENODX_CLAMP_COLORSPACE = Color Space Clamp
 option.RENODX_CLAMP_COLORSPACE.comment = Clamp right at final output.
-value.RENODX_CLAMP_COLORSPACE.RENODX_NONE    = None
-value.RENODX_CLAMP_COLORSPACE.RENODX_BT709   = BT709
-value.RENODX_CLAMP_COLORSPACE.RENODX_BT2020  = BT2020
-value.RENODX_CLAMP_COLORSPACE.RENODX_AP1     = AP1
+value.RENODX_CLAMP_COLORSPACE.RENODX_CS_NONE    = None
+value.RENODX_CLAMP_COLORSPACE.RENODX_CS_BT709   = BT709
+value.RENODX_CLAMP_COLORSPACE.RENODX_CS_BT2020  = BT2020
+value.RENODX_CLAMP_COLORSPACE.RENODX_CS_AP1     = AP1
 
-option.RENODX_GAMMA = Gamma Correction
-option.RENODX_GAMMA.comment = Apply gamma correction in working color space before tonemapping. Turn off EOTF Emulation if using.
-value.RENODX_GAMMA.RENODX_GAMMA_NONE = Off
-value.RENODX_GAMMA.RENODX_GAMMA_22  = 2.2
-value.RENODX_GAMMA.RENODX_GAMMA_24 = 2.4
+option.RENODX_GAMMACORRECTION = Gamma Correction
+option.RENODX_GAMMACORRECTION.comment = Apply EOTF / Gamma Correction before tonemapping. This is a last resort solution, since UI is not included!
+value.RENODX_GAMMACORRECTION.RENODX_GAMMA_NONE = Off
+value.RENODX_GAMMACORRECTION.RENODX_GAMMA_22  = 2.2
+value.RENODX_GAMMACORRECTION.RENODX_GAMMA_24 = 2.4
 
-option.RENODX_SATURATION = Saturation
-option.RENODX_SATURATION.comment = OKLab saturation, in percentage. 100 is disabled.
+option.RENODX_COLORGRADE_CONTRAST = Contrast
+option.RENODX_COLORGRADE_CONTRAST.comment = Stretches luminance if both ways around mid gray.
+option.RENODX_COLORGRADE_CONTRAST_MID = Contrast Mid Gray
+option.RENODX_COLORGRADE_CONTRAST_MID.comments = The pivot point of the effect.
+
+option.RENODX_COLORGRADE_HIGHLIGHTS = Highlights
+option.RENODX_COLORGRADE_HIGHLIGHTS.comment = Stretches luminance if above mid gray.
+option.RENODX_COLORGRADE_HIGHLIGHTS_MID = Highlights Mid Gray
+option.RENODX_COLORGRADE_HIGHLIGHTS_MID.comments = The pivot point of the effect.
+
+option.RENODX_COLORGRADE_SHADOWS = Shadows
+option.RENODX_COLORGRADE_SHADOWS.comment = Stretches luminance if below mid gray.
+option.RENODX_COLORGRADE_SHADOWS_MID = Shadows Mid Gray
+option.RENODX_COLORGRADE_SHADOWS_MID.comments = The pivot point of the effect.
+
+option.RENODX_COLORGRADE_SATURATION = Saturation
+option.RENODX_COLORGRADE_SATURATION.comment = OKLab saturation, in percentage. 100 is disabled.
 
 # RenoDX Debug
 option.RENODX_DEBUG = Debug Output
@@ -839,9 +853,10 @@ option.RENODX_EXPOSURE.comment = Mutltiplier on color right before HDR Tone Map.
 
 value.RENODX_SCALING.RENODX_SCALING_Y = Luminance
 value.RENODX_SCALING.RENODX_SCALING_PERCHANNEL = Per Channel
-value.RENODX_SCALING.RENODX_SCALING_DEFAULT = Default
+value.RENODX_SCALING.RENODX_SCALING_MAXCHANNEL = Max Channel
+value.RENODX_SCALING.RENODX_SCALING_AUTO = Automatic
 option.RENODX_SCALING = Scaling
-option.RENODX_SCALING.comment = Run the tonemapper for all rgb channels or just the luminance (y) value? If Upgrading, choose Luminance to perserve Upgraded chroma.
+option.RENODX_SCALING.comment = Run the tonemapper for all rgb channels (blows out) or base it off of a pivot (luma or max channel)?
 
 option.RENODX_HDRTONEMAP_TYPE = HDR Tone Map Type
 option.RENODX_HDRTONEMAP_TYPE.comment = Read tooltip of each!
@@ -854,6 +869,12 @@ value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_GT7 = Gran Turismo 7
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_HABLE = Uncharted 2 / Hable
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_EXPROLL = Exponential Roll-off
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_DEFAULT = Default
+
+option.RENODX_WORKINGCS_HDRTONEMAP = HDR Tone Map Working Color Space
+option.RENODX_WORKINGCS_HDRTONEMAP.comment = The working color space of the tonemapper. The wider you go, the more blowout with maybe weird hue shift.
+value.RENODX_WORKINGCS_HDRTONEMAP.RENODX_CS_BT709   = BT709
+value.RENODX_WORKINGCS_HDRTONEMAP.RENODX_CS_BT2020  = BT2020
+value.RENODX_WORKINGCS_HDRTONEMAP.RENODX_CS_AP1     = AP1
 
 # RenoDX ACES
 option.RENODX_ACES_RGC = Gamut Compression Blowout
@@ -913,3 +934,10 @@ option.RENODX_HABLE_F = Toe Denominator
 option.RENODX_HABLE_W = White Point
 option.RENODX_HABLE_BLOWOUT = Blowout
 option.RENODX_HABLE_BLOWOUT.comment = Blend SDR blowout on hightlights.
+
+#RenderIntermediatePass
+option.RENODX_INTER_MODE = Intermediate Pass Mode
+option.RENODX_INTER_MODE.comment = Encode color (eotf and colorspace) to what the final output is expected to be.
+value.RENODX_INTER_MODE.RENODX_INTER_MODE_SCRGB_WITHSRGBGAMMA = scRGB w/ sRGB (BT709)
+value.RENODX_INTER_MODE.RENODX_INTER_MODE_SCRGB = scRGB (BT709)
+value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 (BT2020)

@@ -10,9 +10,6 @@
 */
 
 #include "/include/global.glsl"
-
-#define RENODX_WORKING_COLORSPACE RENODX_AP1
-#define RENODX_SCALING_DEFAULT RENODX_SCALING_PERCHANNEL
 #include "/renodx.glsl"
 
 layout(location = 0) out vec3 fragment_color;
