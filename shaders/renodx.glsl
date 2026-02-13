@@ -257,10 +257,10 @@ option.RENODX_FROSTBITE_HUE = Hue Preservation
 
 #RenderIntermediatePass
 option.RENODX_INTER_MODE = Intermediate Pass Mode
-option.RENODX_INTER_MODE.comment = Encode color (eotf and colorspace) to what the final output is expected to be.
+option.RENODX_INTER_MODE.comment = Encode color (eotf and colorspace) to what the final output is expected to be. Leave sRGB, unless something is super wrong!
 value.RENODX_INTER_MODE.RENODX_INTER_MODE_SRGB = sRGB (BT709)
-value.RENODX_INTER_MODE.RENODX_INTER_MODE_SCRGB = scRGB (BT709)
-value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 (BT2020)
+value.RENODX_INTER_MODE.RENODX_INTER_MODE_SCRGB = scRGB @ 203nits (BT709)
+value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 @ 203nits (BT2020)
 
 */
 
@@ -3042,9 +3042,6 @@ vec3 ToneMapPass(vec3 color_untonemapped, vec3 color_tonemapped, vec2 uv) {
     #else
       result = ToneMapPass_None(result);
     #endif
-
-    // //clamp peak
-    // result = min(vec3(RENODX_PEAK_BRIGHTNESS. / RENODX_GAME_BRIGHTNESS.), result);
   #endif
 #else
   result = color_tonemapped;
@@ -3074,11 +3071,11 @@ vec3 RenderIntermediatePass(vec3 color) {
   #if RENODX_INTER_MODE == RENODX_INTER_MODE_SRGB
     color = SrgbEncodeSafe(color); //to match UI
   #elif RENODX_INTER_MODE == RENODX_INTER_MODE_SCRGB
-    //noop
+    color *= 203/80.;
   #elif RENODX_INTER_MODE == RENODX_INTER_MODE_HDR10
     color = BT709_TO_BT2020_MAT * color;
     color = max(vec3(0), color); //HDR10 is unorm
-    color = PqEncode(color, 100);
+    color = PqEncode(color, 203);
   #endif
   
   return color;

@@ -956,7 +956,7 @@ option.RENODX_FROSTBITE_HUE = Hue Preservation
 
 #RenderIntermediatePass
 option.RENODX_INTER_MODE = Intermediate Pass Mode
-option.RENODX_INTER_MODE.comment = Encode color (eotf and colorspace) to what the final output is expected to be.
+option.RENODX_INTER_MODE.comment = Encode color (eotf and colorspace) to what the final output is expected to be. Leave sRGB, unless something is super wrong!
 value.RENODX_INTER_MODE.RENODX_INTER_MODE_SRGB = sRGB (BT709)
-value.RENODX_INTER_MODE.RENODX_INTER_MODE_SCRGB = scRGB (BT709)
-value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 (BT2020)
+value.RENODX_INTER_MODE.RENODX_INTER_MODE_SCRGB = scRGB @ 203nits (BT709)
+value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 @ 203nits (BT2020)
