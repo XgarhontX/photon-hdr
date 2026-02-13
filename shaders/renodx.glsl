@@ -1366,6 +1366,7 @@ vec3 ToneMapPass_Reinhard(vec3 color) {
 }
 
 // GT Sport //////////////////////////////////////////////////////////////////////////////
+#if RENODX_HDRTONEMAP_TYPE RENODX_HDRTONEMAP_TYPE_GT
 vec3 GTTonemap(
   vec3 x, 
   float P /* = 1.f */, 
@@ -1453,9 +1454,11 @@ vec3 ToneMapPass_GTTonemap(vec3 color) {
   
   return color;
 }
+#endif
 
 // ACES /////////////////////////////////////////////////////////////////////////////////
 
+#if RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_ACES
 // Define log10_renodx function for single float
 float log10_renodx(float x) {
   return log(x) / log(10.0);
@@ -1983,9 +1986,10 @@ vec3 ToneMapPass_ACES(vec3 color) {
 
   return color;
 }
+#endif
 
 // Hermite ////////////////////////////////////////////////////////////////////////////////
-
+#if RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_HERMITE
 float HermiteSplineRolloff(float x, float target_white /* = 1.f */, float max_white /* = 20.f */) {
   float l_w = max_white;
   // float l_b = min_black;
@@ -2067,8 +2071,11 @@ vec3 ToneMapPass_Hermite(vec3 color) {
 
   return color;
 } 
+#endif
 
 // GT7 ///////////////////////////////////////////////////////////////////////////////////
+
+#if RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_GT7
 // the higher the scaling, the more it blows out.
 #define PHYSICAL_SCALING 100
 vec3 GT7_FrameBufferValueToPhysicalValue(vec3 fbValue)
@@ -2355,8 +2362,10 @@ vec3 ToneMapPass_GT7(vec3 color) {
 
   return color;
 }
+#endif
 
 // Exponential Rolloff ///////////////////////////////////////////////////////////////////////////
+
 //DICE
 vec3 ExponentialRollOff(vec3 x, float rolloff_start, float output_max) { 
   vec3 rolloff_size = vec3(output_max - rolloff_start);
@@ -2399,6 +2408,7 @@ vec3 ToneMapPass_ExponentialRollOff(vec3 color) {
 
 
 // Uncharted2 / Hable Extended //////////////////////////////////////////////////////////////////////////////
+#if RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_HABLE
 //https://github.com/mqhaji/renodx/blob/main/src/games/batmanak/uncharted2extended.hlsli
 
 float Hable_ApplyCurve(float x, float a, float b, float c, float d, float e, float f) {
@@ -2682,6 +2692,7 @@ vec3 ToneMapPass_Hable(vec3 color) {
 
   return color;
 }
+#endif
 
 // CUSTOM0 ///////////////////////////////////////////////////////////////////////////
 vec3 ToneMapPass_Custom0(vec3 color) { //TODO: 
@@ -2709,6 +2720,7 @@ vec3 ToneMapPass_Custom0(vec3 color) { //TODO:
 }
 
 // NeuTwo ///////////////////////////////////////////////////////////////////////////
+#if RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_NEUTWO
 // https://github.com/clshortfuse/renodx/blob/main/src/shaders/tonemap/neutwo.hlsl
 
 // Neutral tonemap
@@ -2878,9 +2890,10 @@ vec3 ToneMapPass_NeuTwo(vec3 color) {
 
   return color;
 }
+#endif
 
 // Frostbite ///////////////////////////////////////////////////////////////////////////
-
+#if RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_FROSTBITE
 // https://www.ea.com/frostbite/news/high-dynamic-range-color-grading-and-display-in-frostbite
 // Aplies exponential ("Photographic") luma compression
 float Frostbite_RangeCompress(float x) {
@@ -2971,6 +2984,7 @@ vec3 ToneMapPass_Frostbite(vec3 color) {
 
   return color;
 }
+#endif
 
 // None ///////////////////////////////////////////////////////////////////////////
 vec3 ToneMapPass_None(vec3 color) {
