@@ -223,6 +223,7 @@ void main() {
     #else
         scene_color = tonemap(scene_color);
         hdr_color *= YFromBT709(tonemap(vec3(0.18))) / 0.18;
+        scene_color = ApplyPerChannelCorrection(AP1_TO_BT709_MAT * hdr_color, scene_color);
     #endif
 
         scene_color = clamp01(scene_color * working_to_display_color);

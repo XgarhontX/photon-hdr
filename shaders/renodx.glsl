@@ -2,7 +2,7 @@
 //////////////////// shaders.properties
 # RenoDX
 screen.renodx = RENODX_PEAK_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_UI_BRIGHTNESS <empty> \
-RENODX_UPGRADE_ENABLED RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO <empty> \
+RENODX_UPGRADE_ENABLED RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_APPC_AMOUNT RENODX_APPC_POW <empty> \
 RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION <empty> \
 RENODX_HDRTONEMAP_TYPE RENODX_EXPOSURE [renodx_reinhard] [renodx_aces] [renodx_gt] [renodx_gt7] [renodx_hermite] [renodx_exproll] [renodx_hable] [renodx_neutwo] <empty> \
 RENODX_RCAS RENODX_RCAS_DENOISE <empty> \
@@ -34,7 +34,7 @@ screen.renodx_neutwo = RENODX_SCALING RENODX_WORKINGCS_HDRTONEMAP
 screen.renodx_neutwo.columns = 1
 
 //////////////////// shaders.properties sliders 
-RENODX_PEAK_BRIGHTNESS RENODX_UI_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_SHOULDER_START RENODX_WHITE_CLIP RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION RENODX_RCAS RENODX_EXPOSURE RENODX_ACES_MIDGRAY RENODX_GT_A RENODX_GT_M RENODX_GT_L RENODX_GT_C RENODX_GT_B RENODX_GT7_A RENODX_GT7_M RENODX_GT7_L RENODX_GT7_C RENODX_GT7_BLOW_AMOUNT RENODX_GT7_BLOW_START RENODX_GT7_BLOW_END RENODX_HABLE_A RENODX_HABLE_B RENODX_HABLE_C RENODX_HABLE_D RENODX_HABLE_E RENODX_HABLE_F RENODX_HABLE_W RENODX_HABLE_BLOWOUT \
+RENODX_PEAK_BRIGHTNESS RENODX_UI_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_SHOULDER_START RENODX_WHITE_CLIP RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_APPC_AMOUNT RENODX_APPC_POW RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION RENODX_RCAS RENODX_EXPOSURE RENODX_ACES_MIDGRAY RENODX_GT_A RENODX_GT_M RENODX_GT_L RENODX_GT_C RENODX_GT_B RENODX_GT7_A RENODX_GT7_M RENODX_GT7_L RENODX_GT7_C RENODX_GT7_BLOW_AMOUNT RENODX_GT7_BLOW_START RENODX_GT7_BLOW_END RENODX_HABLE_A RENODX_HABLE_B RENODX_HABLE_C RENODX_HABLE_D RENODX_HABLE_E RENODX_HABLE_F RENODX_HABLE_W RENODX_HABLE_BLOWOUT \
 
 //////////////////// en_US.lang
 # RenoDX Screens
@@ -124,13 +124,18 @@ option.RENODX_WORKINGCOLORSPACE.comment = The color space of the shaderpack's re
 
 # RenoDX Upgrade
 option.RENODX_UPGRADE_ENABLED = Upgrade Tone Map (BT709 Clamp)
-option.RENODX_UPGRADE_ENABLED.comment = Naive map SDR chroma on HDR luma.
+option.RENODX_UPGRADE_ENABLED.comment = Naive map SDR chroma on HDR luma. This maintains all of SDR colorgrading, but will be quick to blowout.
 
 option.RENODX_UPGRADE_AMOUNT = Upgrade Amount
 option.RENODX_UPGRADE_AMOUNT.comment = How much should the HDR color be influenced by the SDR?
 
 option.RENODX_UPGRADE_AUTO = Upgrade Auto Correct
 option.RENODX_UPGRADE_AUTO.comment = How much should the HDR color be corrected by the SDR?
+
+option.RENODX_APPC_AMOUNT = Per Channel Correction Amount
+option.RENODX_APPC_AMOUNT.comment = (w/ Upgrade Tone Map) Attempt to reverse the blowout of SDR tonemapper. 
+option.RENODX_APPC_POW = Per Channel Correction Highlights Only
+option.RENODX_APPC_POW.comment = (w/ Upgrade Tone Map) Increase to target only highlights.
 
 # RenoDX HDR Tone Map
 option.RENODX_EXPOSURE = Exposure
@@ -262,6 +267,10 @@ value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 (BT2020)
 //Upgrade
 #define RENODX_UPGRADE_AMOUNT 1.0 //[0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
 #define RENODX_UPGRADE_AUTO 0.0 //[0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
+
+//ApplyPerChannelCorrection
+#define RENODX_APPC_AMOUNT 45 //[0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 100]
+#define RENODX_APPC_POW 1.75 //[0.00 0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90 0.95 1.00 1.05 1.10 1.15 1.20 1.25 1.30 1.35 1.40 1.45 1.50 1.55 1.60 1.65 1.70 1.75 1.80 1.85 1.90 1.95 2.00 2.05 2.10 2.15 2.20 2.25 2.30 2.35 2.40 2.45 2.50 2.55 2.60 2.65 2.70 2.75 2.80 2.85 2.90 2.95 3.00]
 
 //Debug
 #define RENODX_DEBUG_NONE 0
@@ -689,7 +698,7 @@ vec3 PqEncode(vec3 color, float scaling) {
 
 vec3 PqDecode(vec3 color, float scaling) {
  vec3 e_m12 = pow(color, 1.f / M2);
- vec3 out_color = pow(max(0, e_m12 - C1) / (C2 - C3 * e_m12), 1.f / M1);
+ vec3 out_color = pow(max(vec3(0), e_m12 - C1) / (C2 - C3 * e_m12), 1.f / M1);
  return out_color * (10000.f / scaling);
 }
 
@@ -701,33 +710,87 @@ vec3 CorrectLuminance(vec3 incorrect_color, vec3 correct_color, float strength) 
   return CorrectLuminance(incorrect_color, YFromBT709(incorrect_color), YFromBT709(correct_color), strength);
 }
 
+// Max Scale Clamp ///////////////////////////////////////////////////////////////////////////
+vec3 ClampByMaxScaling(vec3 x, float peak) {
+  float m = max(x.x, max(x.y, x.z));
+  if (m > 0) 
+    if (m > peak) 
+      x *= peak / x;
+  return x;
+}
+
 // OKLab ///////////////////////////////////////////////////////////////////////////
-//By Björn Ottosson
-//https://bottosson.github.io/posts/oklab
+// //By Björn Ottosson
+// //https://bottosson.github.io/posts/oklab
+// 
+// //Shader functions adapted by "mattz"
+// //https://www.shadertoy.com/view/WtccD7
+// 
+// //https://mini.gmshaders.com/p/oklab 
+// vec3 oklab_from_linear(vec3 linear) {
+//   const mat3 im1 = mat3(0.4121656120, 0.2118591070, 0.0883097947, 0.5362752080, 0.6807189584, 0.2818474174, 0.0514575653, 0.1074065790, 0.6302613616);
+//   const mat3 im2 = mat3(+0.2104542553, +1.9779984951, +0.0259040371, +0.7936177850, -2.4285922050, +0.7827717662, -0.0040720468, +0.4505937099, -0.8086757660);
+//   vec3 lms = im1 * linear;
+//   return im2 * (sign(lms) * pow(abs(lms), vec3(1.0 / 3.0)));
+// }
+// 
+// vec3 linear_from_oklab(vec3 oklab) {
+//   const mat3 m1 = mat3(+1.000000000, +1.000000000, +1.000000000, +0.396337777, -0.105561346, -0.089484178, +0.215803757, -0.063854173, -1.291485548);
+//   const mat3 m2 = mat3(+4.076724529, -1.268143773, -0.004111989, -3.307216883, +2.609332323, -0.703476310, +0.230759054, -0.341134429, +1.706862569);
+//   vec3 lms = m1 * oklab;
+//   return m2 * (lms * lms * lms);
+// }
+// 
 
-//Shader functions adapted by "mattz"
-//https://www.shadertoy.com/view/WtccD7
+// ICtCp ///////////////////////////////////////////////////////////////////////////
+const mat3 XYZ_TO_LMS_MAT = mat3(
+    0.3592832590121217, -0.1920808463704993, 0.0070797844607479,
+    0.6976051147779502, 1.1004767970374321, 0.0748396662186362,
+    -0.0358915932320290, 0.0753748658519118, 0.8433265453898765);
 
-//https://mini.gmshaders.com/p/oklab 
-vec3 oklab_from_linear(vec3 linear) {
-  const mat3 im1 = mat3(0.4121656120, 0.2118591070, 0.0883097947, 0.5362752080, 0.6807189584, 0.2818474174, 0.0514575653, 0.1074065790, 0.6302613616);
-  const mat3 im2 = mat3(+0.2104542553, +1.9779984951, +0.0259040371, +0.7936177850, -2.4285922050, +0.7827717662, -0.0040720468, +0.4505937099, -0.8086757660);
-  vec3 lms = im1 * linear;
-  return im2 * (sign(lms) * pow(abs(lms), vec3(1.0 / 3.0)));
+const mat3 LMS_TO_XYZ_MAT = mat3(
+    2.0701800566956132, 0.36498825003265756, -0.04959554223893212,
+    -1.3264568761030210, 0.68046736285223520, -0.04942116118675749,
+    0.20661600684785517, -0.045421753075853236, 1.1879959417328034);
+
+vec3 IctcpFromBT709(vec3 bt709_color) {
+  vec3 xyz_color = BT709_TO_XYZ_MAT * bt709_color;
+  vec3 lms_color = XYZ_TO_LMS_MAT * xyz_color;
+
+  // mat3 mat = mat3(
+  //     0.5000, 0.5000, 0.0000,
+  //     1.6137, -3.3234, 1.7097,
+  //     4.3780, -4.2455, -0.1325);
+  const mat3 ICTCP_LMS_TO_ICTCP_MAT = mat3(
+      0.5000, 1.6137, 4.3780,
+      0.5000, -3.3234, -4.2455,
+      0.0000, 1.7097, -0.1325);
+
+  return ICTCP_LMS_TO_ICTCP_MAT * PqEncode(lms_color, 100.0f);
 }
 
-vec3 linear_from_oklab(vec3 oklab) {
-  const mat3 m1 = mat3(+1.000000000, +1.000000000, +1.000000000, +0.396337777, -0.105561346, -0.089484178, +0.215803757, -0.063854173, -1.291485548);
-  const mat3 m2 = mat3(+4.076724529, -1.268143773, -0.004111989, -3.307216883, +2.609332323, -0.703476310, +0.230759054, -0.341134429, +1.706862569);
-  vec3 lms = m1 * oklab;
-  return m2 * (lms * lms * lms);
+vec3 BT709FromICtCp(vec3 col) {
+  // mat3 mat = mat3(1.0, 0.00860514569398152, 0.11103560447547328, 1.0,
+  //                 -0.00860514569398152, -0.11103560447547328, 1.0,
+  //                 0.56004885956263900, -0.32063747023212210);
+  const mat3 ICTCP_TO_LMS_MAT = mat3(
+      1.0, 1.0, 1.0,
+      0.008605146, -0.008605146, 0.56004886,
+      0.11103560, -0.11103560, -0.32063747);
+  col = ICTCP_TO_LMS_MAT * col;
+
+  // 1.0f = 100 nits, 100.0f = 10k nits
+  col = PqDecode(col, 100.f);
+  col = LMS_TO_XYZ_MAT * col;
+  return XYZ_TO_BT709_MAT * col;
 }
 
-vec3 HueOKLab(vec3 incorrect_color, vec3 correct_color, float strength) {
+// Hue ///////////////////////////////////////////////////////////////////////////
+vec3 CorrectHue(vec3 incorrect_color, vec3 correct_color, float strength) {
   if(strength == 0.) return incorrect_color;
 
-  vec3 incorrect_lab = oklab_from_linear(incorrect_color);
-  vec3 correct_lab = oklab_from_linear(correct_color);
+  vec3 incorrect_lab = IctcpFromBT709(incorrect_color);
+  vec3 correct_lab = IctcpFromBT709(correct_color);
 
   vec2 incorrect_ab = incorrect_lab.yz;
   vec2 correct_ab = correct_lab.yz;
@@ -744,16 +807,10 @@ vec3 HueOKLab(vec3 incorrect_color, vec3 correct_color, float strength) {
 
   incorrect_lab.yz = blended_ab;
 
-  vec3 result = linear_from_oklab(incorrect_lab);
+  vec3 result = BT709FromICtCp(incorrect_lab);
   return result;
 }
 
-vec3 SaturationOKLab(vec3 color, float saturation) {
-  vec3 lab = oklab_from_linear(color);
-  lab.yz *= saturation;
-  vec3 result = linear_from_oklab(lab);
-  return result;
-}
 
 // Luma SetChrominance ///////////////////////////////////////////////////////////////////////////
 
@@ -798,7 +855,7 @@ vec3 UpgradeToneMapBT709(
 
   vec3 color_scaled = color_tonemapped_graded * ratio;
   // Match hue
-  color_scaled = HueOKLab(color_scaled, color_tonemapped_graded, 1);
+  color_scaled = CorrectHue(color_scaled, color_tonemapped_graded, 1);
   return mix(color_untonemapped, color_scaled, post_process_strength);
 }
 
@@ -1106,6 +1163,126 @@ vec3 RCASRenoDX(sampler2D colorTex, ivec2 uv , float sharpness, float paperWhite
 }
 
 #endif // SRC_RCAS_HLSL
+
+// Apply Per Channel Correction ////////////////////////////////////////////////////////
+struct ApplyPerChannelCorrectionResult {
+  vec3 corrected_color;
+  float tonemapped_luminance;
+};
+ApplyPerChannelCorrectionResult ApplyPerChannelCorrection_Internal(
+    vec3 untonemapped,
+    vec3 per_channel_color,
+    float blowout_restoration,
+    float hue_correction_strength,
+    float chrominance_correction_strength,
+    float hue_shift_strength) {
+  ApplyPerChannelCorrectionResult result;
+
+  float tonemapped_luminance = YFromBT709(abs(per_channel_color));
+  result.tonemapped_luminance = tonemapped_luminance;
+
+  const float AUTO_CORRECT_BLACK = 0.02;
+  // Fix near black
+  float untonemapped_luminance = YFromBT709(abs(untonemapped));
+  float ratio = tonemapped_luminance / untonemapped_luminance;
+  float auto_correct_ratio = mix(ratio, 1.0,
+                                 clamp(untonemapped_luminance / AUTO_CORRECT_BLACK, 0.0, 1.0));
+  untonemapped *= auto_correct_ratio;
+
+  vec3 tonemapped_perceptual = IctcpFromBT709(per_channel_color);
+  vec3 untonemapped_perceptual = IctcpFromBT709(untonemapped);
+
+  vec2 untonemapped_chromas = untonemapped_perceptual.yz;
+  vec2 tonemapped_chromas = tonemapped_perceptual.yz;
+
+  float untonemapped_chrominance = length(untonemapped_perceptual.yz);  // eg: 0.80
+  float tonemapped_chrominance = length(tonemapped_perceptual.yz);      // eg: 0.20
+
+  // clamp saturation loss
+  float chrominance_ratio = min(DivideSafe(tonemapped_chrominance,
+                                           untonemapped_chrominance, 1.0),
+                                1.0);
+  chrominance_ratio = max(chrominance_ratio, blowout_restoration);
+
+  // Untonemapped hue, tonemapped chrominance (with limit)
+  vec2 reduced_untonemapped_chromas = untonemapped_chromas * chrominance_ratio;
+
+  // pick chroma based on per-channel luminance (supports not oversaturating crushed areas)
+  vec2 reduced_hue_shifted = mix(
+      tonemapped_chromas,
+      reduced_untonemapped_chromas,
+      clamp(tonemapped_luminance / 0.36, 0.0, 1.0));
+
+  // Tonemapped hue, restored chrominance (with limit)
+  vec2 blowout_restored_chromas = tonemapped_chromas * DivideSafe(length(reduced_hue_shifted), length(tonemapped_chromas), 1.0);
+
+  vec2 hue_shifted_chromas = mix(reduced_hue_shifted,
+                                       blowout_restored_chromas,
+                                       hue_shift_strength);
+
+  // Pick untonemapped hues for shadows/midtones
+  vec2 hue_correct_chromas = untonemapped_chromas * DivideSafe(length(hue_shifted_chromas), length(untonemapped_chromas), 1.0);
+
+  vec2 selectable_hue_correct_range = mix(
+      hue_correct_chromas,
+      hue_shifted_chromas,
+      clamp(tonemapped_luminance / 0.36, 0.0, 1.0));
+
+  vec2 hue_corrected_chromas = mix(hue_shifted_chromas,
+                                         selectable_hue_correct_range,
+                                         hue_correction_strength);
+
+  vec2 chroma_correct_chromas = hue_corrected_chromas * DivideSafe(length(untonemapped_chromas), length(hue_corrected_chromas), 1.0);
+
+  vec2 selectable_chroma_correct_range = mix(
+      chroma_correct_chromas,
+      hue_corrected_chromas,
+      clamp(tonemapped_luminance / 0.36, 0.0, 1.0));
+
+  vec2 chroma_corrected_chromas = mix(
+      hue_correct_chromas,
+      selectable_chroma_correct_range,
+      chrominance_correction_strength);
+
+  vec2 final_chromas = chroma_corrected_chromas;
+
+  result.corrected_color = BT709FromICtCp(vec3(
+      tonemapped_perceptual.x,
+      final_chromas));
+
+  return result;
+}
+
+//For UpgradeToneMap() pairing. 
+// Run me right after SDT tonemap to restore lost chroma from quick SDR blowouts.
+// Requires both BT709.
+vec3 ApplyPerChannelCorrection(vec3 untonemapped, vec3 per_channel_color) {
+#if RENODX_APPC_AMOUNT == 0
+  return per_channel_color;
+#else
+  ApplyPerChannelCorrectionResult result = ApplyPerChannelCorrection_Internal(
+      untonemapped,
+      per_channel_color,
+      0.5,
+      1.0,
+      1.0,
+      0.5);
+
+  result.corrected_color = max(vec3(0), result.corrected_color);
+  result.corrected_color = ClampByMaxScaling(result.corrected_color, max(untonemapped.x, max(untonemapped.y, untonemapped.z)));
+
+  #if RENODX_APPC_POW > 0
+    float strength = result.tonemapped_luminance;
+    strength = clamp(strength, 0.0, 1.0);
+    strength = pow(strength, RENODX_APPC_POW);
+    strength *= RENODX_APPC_AMOUNT * 0.01;
+    return mix(per_channel_color, result.corrected_color, strength);
+  #else
+    return result.corrected_color;
+  #endif
+#endif
+}
+
 
 // Reinhard ///////////////////////////////////////////////////////////////////////////
 vec3 ReinhardInv(vec3 x) {
@@ -1822,7 +1999,7 @@ vec3 ToneMapPass_ACES(vec3 color) {
   return color;
 }
 
-// Hermit ////////////////////////////////////////////////////////////////////////////////
+// Hermite ////////////////////////////////////////////////////////////////////////////////
 
 float HermiteSplineRolloff(float x, float target_white /* = 1.f */, float max_white /* = 20.f */) {
   float l_w = max_white;
@@ -2523,25 +2700,25 @@ vec3 ToneMapPass_Hable(vec3 color) {
 
 // CUSTOM0 ///////////////////////////////////////////////////////////////////////////
 vec3 ToneMapPass_Custom0(vec3 color) { //TODO: 
-  const float peak = (RENODX_PEAK_BRIGHTNESS. / RENODX_GAME_BRIGHTNESS.);
-  const float shoulder = (RENODX_SHOULDER_START. / RENODX_GAME_BRIGHTNESS.);
-  const float white_clip = RENODX_WHITE_CLIP;
-
-  color = AP1_TO_BT709_MAT * color;
-  vec3 colorOk = oklab_from_linear(color);
-  float percent_max = Rescale(0, 2, 0, 1, colorOk.x);
-  percent_max = clamp(percent_max, 0, 0.99);
-  // percent_max = pow(percent_max, 4);
-  percent_max *= percent_max;
-  float blowout_strength = 1.f;
-  float blowout_change = pow(1.f - percent_max, blowout_strength); //just a tiniest for the brightest.
-  colorOk.yz *= blowout_change;
-  color = linear_from_oklab(colorOk);
-  color = BT709_TO_AP1_MAT * color;
-
-  float y = YOrMaxChannelForHDRTonemap(color);
-  float y1 = ReinhardPiecewiseExtended(y, white_clip, peak, shoulder);
-  color *= y1 / max(y, 0.000001);
+//   const float peak = (RENODX_PEAK_BRIGHTNESS. / RENODX_GAME_BRIGHTNESS.);
+//   const float shoulder = (RENODX_SHOULDER_START. / RENODX_GAME_BRIGHTNESS.);
+//   const float white_clip = RENODX_WHITE_CLIP;
+// 
+//   color = AP1_TO_BT709_MAT * color;
+//   vec3 colorOk = oklab_from_linear(color);
+//   float percent_max = Rescale(0, 2, 0, 1, colorOk.x);
+//   percent_max = clamp(percent_max, 0, 0.99);
+//   // percent_max = pow(percent_max, 4);
+//   percent_max *= percent_max;
+//   float blowout_strength = 1.f;
+//   float blowout_change = pow(1.f - percent_max, blowout_strength); //just a tiniest for the brightest.
+//   colorOk.yz *= blowout_change;
+//   color = linear_from_oklab(colorOk);
+//   color = BT709_TO_AP1_MAT * color;
+// 
+//   float y = YOrMaxChannelForHDRTonemap(color);
+//   float y1 = ReinhardPiecewiseExtended(y, white_clip, peak, shoulder);
+//   color *= y1 / max(y, 0.000001);
 
   return color;
 }

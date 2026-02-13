@@ -846,13 +846,18 @@ option.RENODX_WORKINGCOLORSPACE.comment = The color space of the shaderpack's re
 
 # RenoDX Upgrade
 option.RENODX_UPGRADE_ENABLED = Upgrade Tone Map (BT709 Clamp)
-option.RENODX_UPGRADE_ENABLED.comment = Naive map SDR chroma on HDR luma.
+option.RENODX_UPGRADE_ENABLED.comment = Naive map SDR chroma on HDR luma. This maintains all of SDR colorgrading, but will be quick to blowout.
 
 option.RENODX_UPGRADE_AMOUNT = Upgrade Amount
 option.RENODX_UPGRADE_AMOUNT.comment = How much should the HDR color be influenced by the SDR?
 
 option.RENODX_UPGRADE_AUTO = Upgrade Auto Correct
 option.RENODX_UPGRADE_AUTO.comment = How much should the HDR color be corrected by the SDR?
+
+option.RENODX_APPC_AMOUNT = Per Channel Correction Amount
+option.RENODX_APPC_AMOUNT.comment = (w/ Upgrade Tone Map) Attempt to reverse the blowout of SDR tonemapper. 
+option.RENODX_APPC_POW = Per Channel Correction Highlights Only
+option.RENODX_APPC_POW.comment = (w/ Upgrade Tone Map) Increase to target only highlights.
 
 # RenoDX HDR Tone Map
 option.RENODX_EXPOSURE = Exposure
