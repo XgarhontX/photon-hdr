@@ -1549,22 +1549,13 @@ vec4 ACES_ODTToneMap(vec4 rgb_pre, float min_y, float max_y) {
   return clamp(rgb_post, 0.0, 65535.0);
 }
 
-vec3 ACES_ODT(vec3 rgb_pre, float min_y, float max_y, mat3 odt_matrix) {
+vec3 ACES_ODT(vec3 rgb_pre, float min_y, float max_y) {
   vec3 tonescaled = ACES_ODTToneMap(rgb_pre, min_y, max_y);
-  vec3 output_color = odt_matrix * tonescaled;
-  return output_color;
-}
-
-vec4 ACES_ODT(vec4 rgb_pre, float min_y, float max_y, mat3 odt_matrix) {
-  vec4 tonescaled = ACES_ODTToneMap(rgb_pre, min_y, max_y);
-  vec4 output_color = vec4(odt_matrix * tonescaled.rgb, tonescaled.a);
-  return output_color;
+  return tonescaled;
 }
 
 //Requires AP1
-vec3 ACES_RGCAndRRTAndODT(vec3 color, float min_y, float max_y, mat3 odt_matrix) {
-  color = BT709_TO_AP1_MAT * color;
-
+vec3 ACES_RGCAndRRTAndODT(vec3 color, float min_y, float max_y) {
   #ifdef RENODX_ACES_RGC
     color = GamutCompress(color); // Compresses to AP1 (BLOWOUT)
   #endif
@@ -1574,11 +1565,8 @@ vec3 ACES_RGCAndRRTAndODT(vec3 color, float min_y, float max_y, mat3 odt_matrix)
     color = RRT(color);        // RRT AP0 => AP1
   #endif
 
-  color = ACES_ODT(color, min_y, max_y, odt_matrix);  // ACES_ODT AP1 => Matrix
+  color = ACES_ODT(color, min_y, max_y);  // ACES_ODT AP1 => Matrix
   return color;
-}
-vec3 ACES_RGCAndRRTAndODT(vec3 color, float min_y, float max_y) {
-  return ACES_RGCAndRRTAndODT(color, min_y, max_y, AP1_TO_BT709_MAT);
 }
 
 vec3 ToneMapPass_ACES(vec3 color) {
@@ -1591,9 +1579,13 @@ vec3 ToneMapPass_ACES(vec3 color) {
   aces_max /= mid_gray_scale;
   aces_min /= mid_gray_scale;
 
+  // color = GammeCorrectSafe_PowToSrgb(color, 2.6);
+  color = ColorSpaceConversion(color, RENODX_WORKINGCS_SHADERPACK, RENODX_CS_AP1);
   color = ACES_RGCAndRRTAndODT(color, aces_min * 48.f, aces_max * 48.f);
   color /= 48.f;
   color *= mid_gray_scale;
+  color = ColorSpaceConversion(color, RENODX_CS_AP1, RENODX_WORKINGCS_AFTERTONEMAP);
+
 
   return color;
 }
