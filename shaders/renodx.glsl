@@ -3,8 +3,8 @@
 //Do SDR onto HDR UpgradeToneMap()?
 //#define RENODX_UPGRADE_ENABLED
 
-//HDR Tonemap settings (User too, but changeable for a default setting)
-#define RENODX_HDRTONEMAP_TYPE RENODX_HDRTONEMAP_TYPE_NEUTWO //[RENODX_HDRTONEMAP_TYPE_OFF RENODX_HDRTONEMAP_TYPE_REINHARD RENODX_HDRTONEMAP_TYPE_ACES RENODX_HDRTONEMAP_TYPE_GT RENODX_HDRTONEMAP_TYPE_GT7 RENODX_HDRTONEMAP_TYPE_HERMITE RENODX_HDRTONEMAP_TYPE_EXPROLL RENODX_HDRTONEMAP_TYPE_NEUTWO]
+//HDR Tonemap settings
+#define RENODX_HDRTONEMAP_TYPE RENODX_HDRTONEMAP_TYPE_REINHARD //[RENODX_HDRTONEMAP_TYPE_OFF RENODX_HDRTONEMAP_TYPE_REINHARD RENODX_HDRTONEMAP_TYPE_ACES RENODX_HDRTONEMAP_TYPE_GT RENODX_HDRTONEMAP_TYPE_GT7 RENODX_HDRTONEMAP_TYPE_HERMITE RENODX_HDRTONEMAP_TYPE_EXPROLL RENODX_HDRTONEMAP_TYPE_NEUTWO RENODX_HDRTONEMAP_TYPE_FROSTBITE] /* Which HDR Tonemap to use. Read tooltip of each! */
 
 //Color space expected for each step
 #define RENODX_WORKINGCS_SHADERPACK RENODX_CS_AP1 /* Internal working color space of shaderpack. */
@@ -23,7 +23,7 @@
 # RenoDX
 screen.renodx = RENODX_PEAK_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_UI_BRIGHTNESS <empty> \
 RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION <empty> \
-RENODX_HDRTONEMAP_TYPE RENODX_EXPOSURE [renodx_reinhard] [renodx_aces] [renodx_gt] [renodx_gt7] [renodx_hermite] [renodx_exproll] [renodx_hable] [renodx_neutwo] <empty> \
+RENODX_HDRTONEMAP_TYPE RENODX_EXPOSURE [renodx_reinhard] [renodx_aces] [renodx_gt] [renodx_gt7] [renodx_hermite] [renodx_exproll] [renodx_hable] [renodx_neutwo] [renodx_frostbite] <empty> \
 RENODX_RCAS RENODX_RCAS_DENOISE <empty> \
 RENODX_GAMMACORRECTION RENODX_INTER_MODE <empty> \
 RENODX_UPGRADE_ENABLED RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_APPC_AMOUNT RENODX_APPC_POW RENODX_DEBUG
@@ -53,8 +53,11 @@ screen.renodx_hable.columns = 1
 screen.renodx_neutwo = RENODX_SCALING RENODX_WORKINGCS_HDRTONEMAP 
 screen.renodx_neutwo.columns = 1
 
+screen.renodx_frostbite = RENODX_SCALING RENODX_SHOULDER_START RENODX_FROSTBITE_SAT RENODX_FROSTBITE_HUE
+screen.renodx_neutwo.columns = 1
+
 //////////////////// shaders.properties sliders 
-RENODX_PEAK_BRIGHTNESS RENODX_UI_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_SHOULDER_START RENODX_WHITE_CLIP RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_APPC_AMOUNT RENODX_APPC_POW RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION RENODX_RCAS RENODX_EXPOSURE RENODX_ACES_MIDGRAY RENODX_GT_A RENODX_GT_M RENODX_GT_L RENODX_GT_C RENODX_GT_B RENODX_GT7_A RENODX_GT7_M RENODX_GT7_L RENODX_GT7_C RENODX_GT7_BLOW_AMOUNT RENODX_GT7_BLOW_START RENODX_GT7_BLOW_END RENODX_HABLE_A RENODX_HABLE_B RENODX_HABLE_C RENODX_HABLE_D RENODX_HABLE_E RENODX_HABLE_F RENODX_HABLE_W RENODX_HABLE_BLOWOUT \
+RENODX_PEAK_BRIGHTNESS RENODX_UI_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_SHOULDER_START RENODX_WHITE_CLIP RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_APPC_AMOUNT RENODX_APPC_POW RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION RENODX_RCAS RENODX_EXPOSURE RENODX_ACES_MIDGRAY RENODX_GT_A RENODX_GT_M RENODX_GT_L RENODX_GT_C RENODX_GT_B RENODX_GT7_A RENODX_GT7_M RENODX_GT7_L RENODX_GT7_C RENODX_GT7_BLOW_AMOUNT RENODX_GT7_BLOW_START RENODX_GT7_BLOW_END RENODX_HABLE_A RENODX_HABLE_B RENODX_HABLE_C RENODX_HABLE_D RENODX_HABLE_E RENODX_HABLE_F RENODX_HABLE_W RENODX_HABLE_BLOWOUT RENODX_FROSTBITE_SAT RENODX_FROSTBITE_HUE \
 
 //////////////////// en_US.lang
 # RenoDX Screens
@@ -64,17 +67,19 @@ screen.renodx_reinhard.comment = Gradually roll off highlights to peak.
 screen.renodx_aces = ACES Settings
 screen.renodx_aces.comment = Contrast and blowout via ACES color space.
 screen.renodx_gt = Gran Turismo Sport Settings
-screen.renodx_gt.comment = ACES-like contrast, very clippy, without hue shifting blowout.
+screen.renodx_gt.comment = ACES-like contrast, very clippy with a fully linear section.
 screen.renodx_gt7 = Gran Turismo 7 Settings
-screen.renodx_gt7.comment = ACES-like contrast, very clippy, and very vibrant. Has customizable blowout. Clamps BT2020 (which is plenty wcg).
+screen.renodx_gt7.comment = Similar to GTSport, but perceptual in BT2020.
 screen.renodx_hermite = Hermite Spline Settings
-screen.renodx_hermite.comment = Scalable spline, very natural.
+screen.renodx_hermite.comment = Scalable spline.
 screen.renodx_hable = Uncharted 2 / Hable Settings
-screen.renodx_hable.comment = From Uncharted 2 by John Hable, with toe, lienar extended to HDR.
+screen.renodx_hable.comment = From Uncharted 2 by John Hable, with toe, linear extended to HDR.
 screen.renodx_exproll = Exponential Roll-off Settings
-screen.renodx_exproll.comment = From DICE's Frostbite, aggressive shoulder roll-off.
+screen.renodx_exproll.comment = By DICE, aggressive shoulder roll-off.
 screen.renodx_neutwo = NeuTwo Settings
-screen.renodx_neutwo.comment = Neutral tonemapper based on power of 2 (squared/sqrt). Similar to Reinhard.
+screen.renodx_neutwo.comment = Neutral tonemapper based on power of 2 (squared/sqrt).
+screen.renodx_frostbite = Frostbite Settings
+screen.renodx_frostbite.comment = DICE's perceptual tonemapper with saturation boost and hue preservation.
 
 # RenoDX Main
 option.RENODX_ENABLED = Enabled
@@ -246,10 +251,13 @@ option.RENODX_HABLE_W = White Point
 option.RENODX_HABLE_BLOWOUT = Blowout
 option.RENODX_HABLE_BLOWOUT.comment = Blend SDR blowout on hightlights.
 
+option.RENODX_FROSTBITE_SAT = Saturation Boost
+option.RENODX_FROSTBITE_HUE = Hue Preservation
+
 #RenderIntermediatePass
 option.RENODX_INTER_MODE = Intermediate Pass Mode
 option.RENODX_INTER_MODE.comment = Encode color (eotf and colorspace) to what the final output is expected to be.
-value.RENODX_INTER_MODE.RENODX_INTER_MODE_SCRGB_WITHSRGBGAMMA = scRGB w/ sRGB (BT709)
+value.RENODX_INTER_MODE.RENODX_INTER_MODE_SRGB = sRGB (BT709)
 value.RENODX_INTER_MODE.RENODX_INTER_MODE_SCRGB = scRGB (BT709)
 value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 (BT2020)
 
@@ -261,7 +269,7 @@ value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 (BT2020)
 
 #define RENODX_PEAK_BRIGHTNESS 1000 //[0 203 210 215 220 225 230 235 240 245 250 255 260 265 270 275 280 285 290 295 300 305 310 315 320 325 330 335 340 345 350 355 360 365 370 375 380 385 390 395 400 405 410 415 420 425 430 435 440 445 450 455 460 465 470 475 480 485 490 495 500 505 510 515 520 525 530 535 540 545 550 555 560 565 570 575 580 585 590 595 600 605 610 615 620 625 630 635 640 645 650 655 660 665 670 675 680 685 690 695 700 705 710 715 720 725 730 735 740 745 750 755 760 765 770 775 780 785 790 795 800 805 810 815 820 825 830 835 840 845 850 855 860 865 870 875 880 885 890 895 900 905 910 915 920 925 930 935 940 945 950 955 960 965 970 975 980 985 990 995 1000 1005 1010 1015 1020 1025 1030 1035 1040 1045 1050 1055 1060 1065 1070 1075 1080 1085 1090 1095 1100 1105 1110 1115 1120 1125 1130 1135 1140 1145 1150 1155 1160 1165 1170 1175 1180 1185 1190 1195 1200 1205 1210 1215 1220 1225 1230 1235 1240 1245 1250 1255 1260 1265 1270 1275 1280 1285 1290 1295 1300 1305 1310 1315 1320 1325 1330 1335 1340 1345 1350 1355 1360 1365 1370 1375 1380 1385 1390 1395 1400 1405 1410 1415 1420 1425 1430 1435 1440 1445 1450 1455 1460 1465 1470 1475 1480 1485 1490 1495 1500 1505 1510 1515 1520 1525 1530 1535 1540 1545 1550 1555 1560 1565 1570 1575 1580 1585 1590 1595 1600 1605 1610 1615 1620 1625 1630 1635 1640 1645 1650 1655 1660 1665 1670 1675 1680 1685 1690 1695 1700 1705 1710 1715 1720 1725 1730 1735 1740 1745 1750 1755 1760 1765 1770 1775 1780 1785 1790 1795 1800 1805 1810 1815 1820 1825 1830 1835 1840 1845 1850 1855 1860 1865 1870 1875 1880 1885 1890 1895 1900 1905 1910 1915 1920 1925 1930 1935 1940 1945 1950 1955 1960 1965 1970 1975 1980 1985 1990 1995 2000 2005 2010 2015 2020 2025 2030 2035 2040 2045 2050 2055 2060 2065 2070 2075 2080 2085 2090 2095 2100 2105 2110 2115 2120 2125 2130 2135 2140 2145 2150 2155 2160 2165 2170 2175 2180 2185 2190 2195 2200 2205 2210 2215 2220 2225 2230 2235 2240 2245 2250 2255 2260 2265 2270 2275 2280 2285 2290 2295 2300 2305 2310 2315 2320 2325 2330 2335 2340 2345 2350 2355 2360 2365 2370 2375 2380 2385 2390 2395 2400 2405 2410 2415 2420 2425 2430 2435 2440 2445 2450 2455 2460 2465 2470 2475 2480 2485 2490 2495 2500 2505 2510 2515 2520 2525 2530 2535 2540 2545 2550 2555 2560 2565 2570 2575 2580 2585 2590 2595 2600 2605 2610 2615 2620 2625 2630 2635 2640 2645 2650 2655 2660 2665 2670 2675 2680 2685 2690 2695 2700 2705 2710 2715 2720 2725 2730 2735 2740 2745 2750 2755 2760 2765 2770 2775 2780 2785 2790 2795 2800 2805 2810 2815 2820 2825 2830 2835 2840 2845 2850 2855 2860 2865 2870 2875 2880 2885 2890 2895 2900 2905 2910 2915 2920 2925 2930 2935 2940 2945 2950 2955 2960 2965 2970 2975 2980 2985 2990 2995 3000 3005 3010 3015 3020 3025 3030 3035 3040 3045 3050 3055 3060 3065 3070 3075 3080 3085 3090 3095 3100 3105 3110 3115 3120 3125 3130 3135 3140 3145 3150 3155 3160 3165 3170 3175 3180 3185 3190 3195 3200 3205 3210 3215 3220 3225 3230 3235 3240 3245 3250 3255 3260 3265 3270 3275 3280 3285 3290 3295 3300 3305 3310 3315 3320 3325 3330 3335 3340 3345 3350 3355 3360 3365 3370 3375 3380 3385 3390 3395 3400 3405 3410 3415 3420 3425 3430 3435 3440 3445 3450 3455 3460 3465 3470 3475 3480 3485 3490 3495 3500 3505 3510 3515 3520 3525 3530 3535 3540 3545 3550 3555 3560 3565 3570 3575 3580 3585 3590 3595 3600 3605 3610 3615 3620 3625 3630 3635 3640 3645 3650 3655 3660 3665 3670 3675 3680 3685 3690 3695 3700 3705 3710 3715 3720 3725 3730 3735 3740 3745 3750 3755 3760 3765 3770 3775 3780 3785 3790 3795 3800 3805 3810 3815 3820 3825 3830 3835 3840 3845 3850 3855 3860 3865 3870 3875 3880 3885 3890 3895 3900 3905 3910 3915 3920 3925 3930 3935 3940 3945 3950 3955 3960 3965 3970 3975 3980 3985 3990 3995 4000 10000]
 #define RENODX_SHOULDER_START 36 //[0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 280 281 282 283 284 285 286 287 288 289 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 327 328 329 330 331 332 333 334 335 336 337 338 339 340 341 342 343 344 345 346 347 348 349 350 351 352 353 354 355 356 357 358 359 360 361 362 363 364 365 366 367 368 369 370 371 372 373 374 375 376 377 378 379 380 381 382 383 384 385 386 387 388 389 390 391 392 393 394 395 396 397 398 399 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 419 420 421 422 423 424 425 426 427 428 429 430 431 432 433 434 435 436 437 438 439 440 441 442 443 444 445 446 447 448 449 450 451 452 453 454 455 456 457 458 459 460 461 462 463 464 465 466 467 468 469 470 471 472 473 474 475 476 477 478 479 480 481 482 483 484 485 486 487 488 489 490 491 492 493 494 495 496 497 498 499 500]
-#define RENODX_WHITE_CLIP 120 //[50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 280 281 282 283 284 285 286 287 288 289 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 327 328 329 330 331 332 333 334 335 336 337 338 339 340 341 342 343 344 345 346 347 348 349 350 351 352 353 354 355 356 357 358 359 360 361 362 363 364 365 366 367 368 369 370 371 372 373 374 375 376 377 378 379 380 381 382 383 384 385 386 387 388 389 390 391 392 393 394 395 396 397 398 399 400]
+#define RENODX_WHITE_CLIP 120 //[0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 280 281 282 283 284 285 286 287 288 289 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 327 328 329 330 331 332 333 334 335 336 337 338 339 340 341 342 343 344 345 346 347 348 349 350 351 352 353 354 355 356 357 358 359 360 361 362 363 364 365 366 367 368 369 370 371 372 373 374 375 376 377 378 379 380 381 382 383 384 385 386 387 388 389 390 391 392 393 394 395 396 397 398 399 400]
 
 #define RENODX_UI_BRIGHTNESS 203 //[20 25 30 35 40 45 55 60 65 70 75 80 85 90 95 100 105 110 115 120 125 130 135 140 145 150 155 160 165 170 175 180 185 190 195 200 203 205 210 215 220 225 230 235 240 245 250 255 260 265 270 275 280 285 290 295 300 305 310 315 320 325 330 335 340 345 350 355 360 365 370 375 380 385 390 395 400 405 410 415 420 425 430 435 440 445 450 455 460 465 470 475 480 485 490 495 500 505 510 515 520 525 530 535 540 545 550 555 560 565 570 575 580 585 590 595 600 605 610 615 620 625 630 635 640 645 650 655 660 665 670 675 680 685 690 695 700 705 710 715 720 725 730 735 740 745 750 755 760 765 770 775 780 785 790 795 800 805 810 815 820 825 830 835 840 845 850 855 860 865 870 875 880 885 890 895 900 905 910 915 920 925 930 935 940 945 950 955 960 965 970 975 980 985 990 995 1000]
 #define RENODX_GAME_BRIGHTNESS 203 //[20 25 30 35 40 45 55 60 65 70 75 80 85 90 95 100 105 110 115 120 125 130 135 140 145 150 155 160 165 170 175 180 185 190 195 200 203 205 210 215 220 225 230 235 240 245 250 255 260 265 270 275 280 285 290 295 300 305 310 315 320 325 330 335 340 345 350 355 360 365 370 375 380 385 390 395 400 405 410 415 420 425 430 435 440 445 450 455 460 465 470 475 480 485 490 495 500 505 510 515 520 525 530 535 540 545 550 555 560 565 570 575 580 585 590 595 600 605 610 615 620 625 630 635 640 645 650 655 660 665 670 675 680 685 690 695 700 705 710 715 720 725 730 735 740 745 750 755 760 765 770 775 780 785 790 795 800 805 810 815 820 825 830 835 840 845 850 855 860 865 870 875 880 885 890 895 900 905 910 915 920 925 930 935 940 945 950 955 960 965 970 975 980 985 990 995 1000]
@@ -337,6 +345,7 @@ value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 (BT2020)
 #define RENODX_HDRTONEMAP_TYPE_EXPROLL 7
 #define RENODX_HDRTONEMAP_TYPE_CUSTOM1 8
 #define RENODX_HDRTONEMAP_TYPE_NEUTWO 9
+#define RENODX_HDRTONEMAP_TYPE_FROSTBITE 10
 
 //Tonemap: Reinhard
 //nothing 
@@ -377,9 +386,14 @@ value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 (BT2020)
 //Tonemap: NeuTwo
 //nothing
 
+//Tonemap: Frostbite
+#define RENODX_FROSTBITE_SAT 1.00 //[0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34 0.35 0.36 0.37 0.38 0.39 0.40 0.41 0.42 0.43 0.44 0.45 0.46 0.47 0.48 0.49 0.50 0.51 0.52 0.53 0.54 0.55 0.56 0.57 0.58 0.59 0.60 0.61 0.62 0.63 0.64 0.65 0.66 0.67 0.68 0.69 0.70 0.71 0.72 0.73 0.74 0.75 0.76 0.77 0.78 0.79 0.80 0.81 0.82 0.83 0.84 0.85 0.86 0.87 0.88 0.89 0.90 0.91 0.92 0.93 0.94 0.95 0.96 0.97 0.98 0.99 1.00]
+#define RENODX_FROSTBITE_HUE 1.00 //[0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34 0.35 0.36 0.37 0.38 0.39 0.40 0.41 0.42 0.43 0.44 0.45 0.46 0.47 0.48 0.49 0.50 0.51 0.52 0.53 0.54 0.55 0.56 0.57 0.58 0.59 0.60 0.61 0.62 0.63 0.64 0.65 0.66 0.67 0.68 0.69 0.70 0.71 0.72 0.73 0.74 0.75 0.76 0.77 0.78 0.79 0.80 0.81 0.82 0.83 0.84 0.85 0.86 0.87 0.88 0.89 0.90 0.91 0.92 0.93 0.94 0.95 0.96 0.97 0.98 0.99 1.00]
+
+
 //RenderIntermediatePass
-#define RENODX_INTER_MODE RENODX_INTER_MODE_SCRGB_WITHSRGBGAMMA //[RENODX_INTER_MODE_SCRGB_WITHSRGBGAMMA RENODX_INTER_MODE_HDR10 RENODX_INTER_MODE_SCRGB]
-#define RENODX_INTER_MODE_SCRGB_WITHSRGBGAMMA 1
+#define RENODX_INTER_MODE RENODX_INTER_MODE_SRGB //[RENODX_INTER_MODE_SRGB RENODX_INTER_MODE_HDR10 RENODX_INTER_MODE_SCRGB]
+#define RENODX_INTER_MODE_SRGB 1
 #define RENODX_INTER_MODE_HDR10 2
 #define RENODX_INTER_MODE_SCRGB 3
 
@@ -526,12 +540,15 @@ float YFromCS(vec3 x, int cs) {
   return 0.0;
 }
 
-float YOrMaxChannelForHDRTonemap(vec3 x) {
+float YOrMaxChannelForHDRTonemap(vec3 x, int cs) {
   #if RENODX_SCALING == RENODX_SCALING_Y
-    return YFromCS(x, RENODX_WORKINGCS_HDRTONEMAP);
+    return YFromCS(x, cs);
   #elif RENODX_SCALING_MAXCHANNEL
     return max(x.x, max(x.y, x.z));
   #endif
+}
+float YOrMaxChannelForHDRTonemap(vec3 x) {
+  return YOrMaxChannelForHDRTonemap(x, RENODX_WORKINGCS_HDRTONEMAP);
 }
 
 // Inv Lerp / Rescale //////////////////////////////////////////////////////////////
@@ -717,29 +734,6 @@ vec3 ClampByMaxScaling(vec3 x, float peak) {
   return x;
 }
 
-// OKLab ///////////////////////////////////////////////////////////////////////////
-// //By Björn Ottosson
-// //https://bottosson.github.io/posts/oklab
-// 
-// //Shader functions adapted by "mattz"
-// //https://www.shadertoy.com/view/WtccD7
-// 
-// //https://mini.gmshaders.com/p/oklab 
-// vec3 oklab_from_linear(vec3 linear) {
-//   const mat3 im1 = mat3(0.4121656120, 0.2118591070, 0.0883097947, 0.5362752080, 0.6807189584, 0.2818474174, 0.0514575653, 0.1074065790, 0.6302613616);
-//   const mat3 im2 = mat3(+0.2104542553, +1.9779984951, +0.0259040371, +0.7936177850, -2.4285922050, +0.7827717662, -0.0040720468, +0.4505937099, -0.8086757660);
-//   vec3 lms = im1 * linear;
-//   return im2 * (sign(lms) * pow(abs(lms), vec3(1.0 / 3.0)));
-// }
-// 
-// vec3 linear_from_oklab(vec3 oklab) {
-//   const mat3 m1 = mat3(+1.000000000, +1.000000000, +1.000000000, +0.396337777, -0.105561346, -0.089484178, +0.215803757, -0.063854173, -1.291485548);
-//   const mat3 m2 = mat3(+4.076724529, -1.268143773, -0.004111989, -3.307216883, +2.609332323, -0.703476310, +0.230759054, -0.341134429, +1.706862569);
-//   vec3 lms = m1 * oklab;
-//   return m2 * (lms * lms * lms);
-// }
-// 
-
 // ICtCp ///////////////////////////////////////////////////////////////////////////
 const mat3 XYZ_TO_LMS_MAT = mat3(
     0.3592832590121217, -0.1920808463704993, 0.0070797844607479,
@@ -751,14 +745,10 @@ const mat3 LMS_TO_XYZ_MAT = mat3(
     -1.3264568761030210, 0.68046736285223520, -0.04942116118675749,
     0.20661600684785517, -0.045421753075853236, 1.1879959417328034);
 
-vec3 IctcpFromBT709(vec3 bt709_color) {
+vec3 ICtCpFromBT709(vec3 bt709_color) {
   vec3 xyz_color = BT709_TO_XYZ_MAT * bt709_color;
   vec3 lms_color = XYZ_TO_LMS_MAT * xyz_color;
 
-  // mat3 mat = mat3(
-  //     0.5000, 0.5000, 0.0000,
-  //     1.6137, -3.3234, 1.7097,
-  //     4.3780, -4.2455, -0.1325);
   const mat3 ICTCP_LMS_TO_ICTCP_MAT = mat3(
       0.5000, 1.6137, 4.3780,
       0.5000, -3.3234, -4.2455,
@@ -768,9 +758,6 @@ vec3 IctcpFromBT709(vec3 bt709_color) {
 }
 
 vec3 BT709FromICtCp(vec3 col) {
-  // mat3 mat = mat3(1.0, 0.00860514569398152, 0.11103560447547328, 1.0,
-  //                 -0.00860514569398152, -0.11103560447547328, 1.0,
-  //                 0.56004885956263900, -0.32063747023212210);
   const mat3 ICTCP_TO_LMS_MAT = mat3(
       1.0, 1.0, 1.0,
       0.008605146, -0.008605146, 0.56004886,
@@ -787,8 +774,8 @@ vec3 BT709FromICtCp(vec3 col) {
 vec3 CorrectHue(vec3 incorrect_color, vec3 correct_color, float strength) {
   if(strength == 0.) return incorrect_color;
 
-  vec3 incorrect_lab = IctcpFromBT709(incorrect_color);
-  vec3 correct_lab = IctcpFromBT709(correct_color);
+  vec3 incorrect_lab = ICtCpFromBT709(incorrect_color);
+  vec3 correct_lab = ICtCpFromBT709(correct_color);
 
   vec2 incorrect_ab = incorrect_lab.yz;
   vec2 correct_ab = correct_lab.yz;
@@ -1187,8 +1174,8 @@ ApplyPerChannelCorrectionResult ApplyPerChannelCorrection_Internal(
                                  clamp(untonemapped_luminance / AUTO_CORRECT_BLACK, 0.0, 1.0));
   untonemapped *= auto_correct_ratio;
 
-  vec3 tonemapped_perceptual = IctcpFromBT709(per_channel_color);
-  vec3 untonemapped_perceptual = IctcpFromBT709(untonemapped);
+  vec3 tonemapped_perceptual = ICtCpFromBT709(per_channel_color);
+  vec3 untonemapped_perceptual = ICtCpFromBT709(untonemapped);
 
   vec2 untonemapped_chromas = untonemapped_perceptual.yz;
   vec2 tonemapped_chromas = tonemapped_perceptual.yz;
@@ -2871,7 +2858,6 @@ vec3 Neutwo(vec3 x, float peak) {
 vec3 ToneMapPass_NeuTwo(vec3 color) {
   //setup
   const float p = RENODX_PEAK_BRIGHTNESS. / RENODX_GAME_BRIGHTNESS.; // Peak (nits)
-  // const float w = RENODX_WHITE_CLIP * 10; // white clip
 
   //do
   color = WorkingColorSpace_Shaderpack_To_HDRTonemap(color);
@@ -2888,6 +2874,99 @@ vec3 ToneMapPass_NeuTwo(vec3 color) {
     color *= s;
   #endif
   color = WorkingColorSpace_HDRTonemap_To_AfterTonemap(color);
+
+  return color;
+}
+
+// Frostbite ///////////////////////////////////////////////////////////////////////////
+
+// https://www.ea.com/frostbite/news/high-dynamic-range-color-grading-and-display-in-frostbite
+// Aplies exponential ("Photographic") luma compression
+float Frostbite_RangeCompress(float x) {
+  return 1.0 - exp(-x);
+}
+
+float Frostbite_RangeCompress(float val, float threshold, float max_value/*  = 1.f */) {
+  if (val < threshold) {
+    return val;
+  } else if (max_value <= threshold) {
+    return threshold;
+  } else {
+    float range = max_value - threshold;
+    return threshold + range * Frostbite_RangeCompress((val - threshold) / range);
+  }
+}
+
+vec3 Frostbite_RangeCompress(vec3 val, float threshold, float max_value/*  = 1.f */) {
+  return vec3(
+      Frostbite_RangeCompress(val.x, threshold, max_value),
+      Frostbite_RangeCompress(val.y, threshold, max_value),
+      Frostbite_RangeCompress(val.z, threshold, max_value));
+}
+
+vec3 Frostbite_BT709(vec3 col, float max_value/*  = 1.f */, float rolloff_start/* = 0.25f */, float saturation_boost_amount/* = 0.3f */, float hue_correct_amount/* = 0.6f */) {
+  vec3 ictcp = ICtCpFromBT709(col);
+
+  // Hue-preserving range compression requires desaturation in order to achieve a natural look. We adaptively desaturate the input based on its luminance.
+
+  float saturationAmount = pow(smoothstep(1.0, 0.3, ictcp.x), 1.3);
+  col = BT709FromICtCp(ictcp.xyz * vec3(1, saturationAmount, saturationAmount));
+
+  // Only compress luminance starting at a certain point. Dimmer inputs are passed through without modification.
+  float linearSegmentEnd = rolloff_start;
+
+  // Hue-preserving mapping
+  float maxCol = max(col.x, max(col.y, col.z));
+  float mappedMax = Frostbite_RangeCompress(maxCol, linearSegmentEnd, max_value);
+  vec3 compressedHuePreserving = col * mappedMax / maxCol;
+
+  // Non-hue preserving mapping
+  vec3 perChannelCompressed = Frostbite_RangeCompress(col, linearSegmentEnd, max_value);
+
+  // Combine hue-preserving and non-hue-preserving colors. Absolute hue preservation looks unnatural, as bright colors *appear* to have been hue shifted.
+  // Actually doing some amount of hue shifting looks more pleasing
+  col = mix(perChannelCompressed, compressedHuePreserving, hue_correct_amount);
+
+  vec3 ictcpMapped = ICtCpFromBT709(col);
+
+  // Smoothly ramp off saturation as brightness increases, but keep some even for very bright input
+  float postCompressionSaturationBoost = saturation_boost_amount * smoothstep(1.0, 0.5, ictcp.x);
+
+  // Re-introduce some hue from the pre-compression color. Something similar could be accomplished by delaying the luma-dependent desaturation before range compression.
+  // Doing it here however does a better job of preserving perceptual luminance of highly saturated colors. Because in the hue-preserving path we only range-compress the max channel,
+  // saturated colors lose luminance. By desaturating them more aggressively first, compressing, and then re-adding some saturation, we can preserve their brightness to a greater extent.
+  ictcpMapped.yz = mix(ictcpMapped.yz, ictcp.yz * ictcpMapped.x / max(1e-3, ictcp.x), postCompressionSaturationBoost);
+
+  col = BT709FromICtCp(ictcpMapped);
+
+  return col;
+}
+
+vec3 ToneMapPass_Frostbite(vec3 color) {
+  //setup
+  const float p = RENODX_PEAK_BRIGHTNESS. / RENODX_GAME_BRIGHTNESS.; // Peak (nits)
+  const float s = RENODX_SHOULDER_START. / RENODX_GAME_BRIGHTNESS.; //shoulder start
+
+  //do
+  color = ColorSpaceConversion(color, RENODX_WORKINGCS_SHADERPACK, RENODX_CS_BT709);
+  // color = WorkingColorSpace_Shaderpack_To_HDRTonemap(color);
+  #if RENODX_SCALING == RENODX_SCALING_Y || RENODX_SCALING == RENODX_SCALING_MAXCHANNEL
+    float y = YOrMaxChannelForHDRTonemap(color, RENODX_CS_BT709);
+    if (y > 0) {
+      float y1 = Frostbite_RangeCompress(y, s, p);
+      color *= y1 / y;
+    }
+  #else
+    // vec3 s = Sign(color);
+    // color = abs(color);
+    color = Frostbite_BT709(color, p, s, RENODX_FROSTBITE_SAT, RENODX_FROSTBITE_HUE);
+    // color *= s;
+
+    // color = ClampByMaxScaling(color, p);
+    // color = min(color, vec3(p));
+  #endif
+  // color = WorkingColorSpace_HDRTonemap_To_AfterTonemap(color);
+  color = ColorSpaceConversion(color, RENODX_CS_BT709, RENODX_WORKINGCS_AFTERTONEMAP);
 
   return color;
 }
@@ -2923,7 +3002,7 @@ vec3 ToneMapPass(vec3 color_untonemapped, vec3 color_tonemapped, vec2 uv) {
     result = color_untonemapped;
   #else
     color_untonemapped = ColorSpaceConversion(color_untonemapped, RENODX_WORKINGCS_SHADERPACK, RENODX_CS_BT709);
-    result = UpgradeToneMapBT709(color_untonemapped, Reinhard(color_untonemapped), color_tonemapped, RENODX_UPGRADE_AMOUNT, RENODX_UPGRADE_AUTO); 
+    result = UpgradeToneMapBT709(color_untonemapped, Reinhard(max(vec3(0), color_untonemapped)), color_tonemapped, RENODX_UPGRADE_AMOUNT, RENODX_UPGRADE_AUTO); 
     result = ColorSpaceConversion(result, RENODX_CS_BT709, RENODX_WORKINGCS_SHADERPACK);
   #endif
 
@@ -2955,6 +3034,8 @@ vec3 ToneMapPass(vec3 color_untonemapped, vec3 color_tonemapped, vec2 uv) {
       result = ToneMapPass_ExponentialRollOff(result);
     #elif RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_NEUTWO
       result = ToneMapPass_NeuTwo(result);
+    #elif RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_FROSTBITE
+      result = ToneMapPass_Frostbite(result);
     #elif RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_CUSTOM1
       result = ToneMapPass_Custom0(result);
     #else
@@ -2989,14 +3070,14 @@ vec3 RenderIntermediatePass(vec3 color) {
   color *= RENODX_GAME_BRIGHTNESS. / RENODX_UI_BRIGHTNESS.;
 
   //Intermediate Encode (for "swapchain" shader to then decode)
-  #if RENODX_INTER_MODE == RENODX_INTER_MODE_SCRGB_WITHSRGBGAMMA
+  #if RENODX_INTER_MODE == RENODX_INTER_MODE_SRGB
     color = SrgbEncodeSafe(color); //to match UI
   #elif RENODX_INTER_MODE == RENODX_INTER_MODE_SCRGB
     //noop
   #elif RENODX_INTER_MODE == RENODX_INTER_MODE_HDR10
     color = BT709_TO_BT2020_MAT * color;
     color = max(vec3(0), color); //HDR10 is unorm
-    color = PqEncode(color, 203); //TODO: 203?
+    color = PqEncode(color, 100);
   #endif
   
   return color;

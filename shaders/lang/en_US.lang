@@ -766,17 +766,19 @@ screen.renodx_reinhard.comment = Gradually roll off highlights to peak.
 screen.renodx_aces = ACES Settings
 screen.renodx_aces.comment = Contrast and blowout via ACES color space.
 screen.renodx_gt = Gran Turismo Sport Settings
-screen.renodx_gt.comment = ACES-like contrast, very clippy, without hue shifting blowout.
+screen.renodx_gt.comment = ACES-like contrast, very clippy with a fully linear section.
 screen.renodx_gt7 = Gran Turismo 7 Settings
-screen.renodx_gt7.comment = ACES-like contrast, very clippy, and very vibrant. Has customizable blowout. Clamps BT2020 (which is plenty wcg).
+screen.renodx_gt7.comment = Similar to GTSport, but perceptual in BT2020.
 screen.renodx_hermite = Hermite Spline Settings
-screen.renodx_hermite.comment = Scalable spline, very natural.
+screen.renodx_hermite.comment = Scalable spline.
 screen.renodx_hable = Uncharted 2 / Hable Settings
-screen.renodx_hable.comment = From Uncharted 2 by John Hable, with toe, lienar extended to HDR.
+screen.renodx_hable.comment = From Uncharted 2 by John Hable, with toe, linear extended to HDR.
 screen.renodx_exproll = Exponential Roll-off Settings
-screen.renodx_exproll.comment = From DICE's Frostbite, aggressive shoulder roll-off.
+screen.renodx_exproll.comment = By DICE, aggressive shoulder roll-off.
 screen.renodx_neutwo = NeuTwo Settings
-screen.renodx_neutwo.comment = Neutral tonemapper based on power of 2 (squared/sqrt). Similar to Reinhard.
+screen.renodx_neutwo.comment = Neutral tonemapper based on power of 2 (squared/sqrt).
+screen.renodx_frostbite = Frostbite Settings
+screen.renodx_frostbite.comment = DICE's perceptual tonemapper with saturation boost and hue preservation.
 
 # RenoDX Main
 option.RENODX_ENABLED = Enabled
@@ -948,9 +950,12 @@ option.RENODX_HABLE_W = White Point
 option.RENODX_HABLE_BLOWOUT = Blowout
 option.RENODX_HABLE_BLOWOUT.comment = Blend SDR blowout on hightlights.
 
+option.RENODX_FROSTBITE_SAT = Saturation Boost
+option.RENODX_FROSTBITE_HUE = Hue Preservation
+
 #RenderIntermediatePass
 option.RENODX_INTER_MODE = Intermediate Pass Mode
 option.RENODX_INTER_MODE.comment = Encode color (eotf and colorspace) to what the final output is expected to be.
-value.RENODX_INTER_MODE.RENODX_INTER_MODE_SCRGB_WITHSRGBGAMMA = scRGB w/ sRGB (BT709)
+value.RENODX_INTER_MODE.RENODX_INTER_MODE_SRGB = sRGB (BT709)
 value.RENODX_INTER_MODE.RENODX_INTER_MODE_SCRGB = scRGB (BT709)
 value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 (BT2020)
