@@ -828,6 +828,12 @@ option.RENODX_COLORGRADE_SHADOWS_MID.comments = The pivot point of the effect.
 option.RENODX_COLORGRADE_SATURATION = Saturation
 option.RENODX_COLORGRADE_SATURATION.comment = OKLab saturation, in percentage. 100 is disabled.
 
+option.RENODX_RCAS = RCAS
+option.RENODX_RCAS.comment = Robust (4 samples) Constrast Adaptive Sharpening
+
+option.RENODX_RCAS_DENOISE = RCAS Denoise
+option.RENODX_RCAS.comment = Turn on RCAS's additional denoising.
+
 # RenoDX Debug
 option.RENODX_DEBUG = Debug Output
 value.RENODX_DEBUG.RENODX_DEBUG_NONE = None

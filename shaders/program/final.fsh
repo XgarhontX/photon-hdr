@@ -71,57 +71,57 @@ vec3 max_of(vec3 a, vec3 b, vec3 c, vec3 d, vec3 f) {
     return max(a, max(b, max(c, max(d, f))));
 }
 
-// FidelityFX contrast-adaptive sharpening filter
-// https://github.com/GPUOpen-Effects/FidelityFX-CAS
-vec3 cas_filter(sampler2D sampler, ivec2 texel, const float sharpness) {
-#ifndef CAS
-    return display_eotf(texelFetch(sampler, texel, 0).rgb);
-#endif
-
-    // Fetch 3x3 neighborhood
-    // a b c
-    // d e f
-    // g h i
-    vec3 a = texelFetch(sampler, texel + ivec2(-1, -1), 0).rgb;
-    vec3 b = texelFetch(sampler, texel + ivec2(0, -1), 0).rgb;
-    vec3 c = texelFetch(sampler, texel + ivec2(1, -1), 0).rgb;
-    vec3 d = texelFetch(sampler, texel + ivec2(-1, 0), 0).rgb;
-    vec3 e = texelFetch(sampler, texel, 0).rgb;
-    vec3 f = texelFetch(sampler, texel + ivec2(1, 0), 0).rgb;
-    vec3 g = texelFetch(sampler, texel + ivec2(-1, 1), 0).rgb;
-    vec3 h = texelFetch(sampler, texel + ivec2(0, 1), 0).rgb;
-    vec3 i = texelFetch(sampler, texel + ivec2(1, 1), 0).rgb;
-
-    // Convert to sRGB before performing CAS
-    a = display_eotf(a);
-    b = display_eotf(b);
-    c = display_eotf(c);
-    d = display_eotf(d);
-    e = display_eotf(e);
-    f = display_eotf(f);
-    g = display_eotf(g);
-    h = display_eotf(h);
-    i = display_eotf(i);
-
-    // Soft min and max. These are 2x bigger (factored out the extra multiply)
-    vec3 min_color = min_of(d, e, f, b, h);
-    min_color += min_of(min_color, a, c, g, i);
-
-    vec3 max_color = max_of(d, e, f, b, h);
-    max_color += max_of(max_color, a, c, g, i);
-
-    // Smooth minimum distance to the signal limit divided by smooth max
-    vec3 w = clamp01(min(min_color, 2.0 - max_color) / max_color);
-    w = 1.0 - sqr(1.0 - w); // Shaping amount of sharpening
-    w *= -1.0 / mix(8.0, 5.0, sharpness);
-
-    // Filter shape:
-    // 0 w 0
-    // w 1 w
-    // 0 w 0
-    vec3 weight_sum = 1.0 + 4.0 * w;
-    return /* clamp01 */((b + d + f + h) * w + e) / weight_sum;
-}
+// // FidelityFX contrast-adaptive sharpening filter
+// // https://github.com/GPUOpen-Effects/FidelityFX-CAS
+// vec3 cas_filter(sampler2D sampler, ivec2 texel, const float sharpness) {
+// #ifndef CAS
+//     return display_eotf(texelFetch(sampler, texel, 0).rgb);
+// #endif
+// 
+//     // Fetch 3x3 neighborhood
+//     // a b c
+//     // d e f
+//     // g h i
+//     vec3 a = texelFetch(sampler, texel + ivec2(-1, -1), 0).rgb;
+//     vec3 b = texelFetch(sampler, texel + ivec2(0, -1), 0).rgb;
+//     vec3 c = texelFetch(sampler, texel + ivec2(1, -1), 0).rgb;
+//     vec3 d = texelFetch(sampler, texel + ivec2(-1, 0), 0).rgb;
+//     vec3 e = texelFetch(sampler, texel, 0).rgb;
+//     vec3 f = texelFetch(sampler, texel + ivec2(1, 0), 0).rgb;
+//     vec3 g = texelFetch(sampler, texel + ivec2(-1, 1), 0).rgb;
+//     vec3 h = texelFetch(sampler, texel + ivec2(0, 1), 0).rgb;
+//     vec3 i = texelFetch(sampler, texel + ivec2(1, 1), 0).rgb;
+// 
+//     // Convert to sRGB before performing CAS
+//     a = display_eotf(a);
+//     b = display_eotf(b);
+//     c = display_eotf(c);
+//     d = display_eotf(d);
+//     e = display_eotf(e);
+//     f = display_eotf(f);
+//     g = display_eotf(g);
+//     h = display_eotf(h);
+//     i = display_eotf(i);
+// 
+//     // Soft min and max. These are 2x bigger (factored out the extra multiply)
+//     vec3 min_color = min_of(d, e, f, b, h);
+//     min_color += min_of(min_color, a, c, g, i);
+// 
+//     vec3 max_color = max_of(d, e, f, b, h);
+//     max_color += max_of(max_color, a, c, g, i);
+// 
+//     // Smooth minimum distance to the signal limit divided by smooth max
+//     vec3 w = clamp01(min(min_color, 2.0 - max_color) / max_color);
+//     w = 1.0 - sqr(1.0 - w); // Shaping amount of sharpening
+//     w *= -1.0 / mix(8.0, 5.0, sharpness);
+// 
+//     // Filter shape:
+//     // 0 w 0
+//     // w 1 w
+//     // 0 w 0
+//     vec3 weight_sum = 1.0 + 4.0 * w;
+//     return /* clamp01 */((b + d + f + h) * w + e) / weight_sum;
+// }
 
 void draw_iris_required_error_message() {
     fragment_color = vec3(
@@ -277,12 +277,11 @@ void main() {
     ivec2 texel = ivec2(gl_FragCoord.xy);
 
     if (abs(MC_RENDER_QUALITY - 1.0) < 0.01) {
-        fragment_color =
-            cas_filter(colortex0, texel, CAS_INTENSITY * 2.0 - 1.0);
+        fragment_color = RCASRenoDX(colortex0, texel, RENODX_RCAS, 1., RENODX_GAMMA_NONE, RENODX_WORKINGCS_AFTERTONEMAP);
     } else {
         fragment_color = catmull_rom_filter_fast_rgb(colortex0, uv, 0.6);
-        fragment_color = display_eotf(fragment_color); 
     }
+    fragment_color = display_eotf(fragment_color); 
 
     // fragment_color = dither_8bit(fragment_color, bayer16(vec2(texel)));
 
