@@ -4,13 +4,14 @@
 //#define RENODX_UPGRADE_ENABLED
 
 //HDR Tonemap settings
-#define RENODX_HDRTONEMAP_TYPE_DEFAULT RENODX_HDRTONEMAP_TYPE_REINHARD
+#define RENODX_HDRTONEMAP_TYPE RENODX_HDRTONEMAP_TYPE_NEUTWO //[RENODX_HDRTONEMAP_TYPE_OFF RENODX_HDRTONEMAP_TYPE_REINHARD RENODX_HDRTONEMAP_TYPE_ACES RENODX_HDRTONEMAP_TYPE_GT RENODX_HDRTONEMAP_TYPE_GT7 RENODX_HDRTONEMAP_TYPE_HERMITE RENODX_HDRTONEMAP_TYPE_EXPROLL RENODX_HDRTONEMAP_TYPE_NEUTWO]
+
 
 //Color space expected for each step?
-#define RENODX_WORKINGCS_SHADERPACK RENODX_CS_AP1
-#define RENODX_WORKINGCS_AFTERTONEMAP RENODX_CS_AP1
-#define RENODX_WORKINGCS_AFTERTONEMAP_DOCLAMP 1 //clamp after ToneMapPass?
-#define RENODX_WORKINGCS_RENDERINTERMEDIATEPASSINPUT RENODX_CS_AP1
+#define RENODX_WORKINGCS_SHADERPACK RENODX_CS_AP1 /* Internal working color space of shaderpack. */
+#define RENODX_WORKINGCS_AFTERTONEMAP RENODX_CS_AP1 /* Colorspace to encode leaving ToneMapPass(). */
+#define RENODX_WORKINGCS_AFTERTONEMAP_DOCLAMP 1 /* Clamp after ToneMapPass? */
+#define RENODX_WORKINGCS_RENDERINTERMEDIATEPASSINPUT RENODX_CS_AP1 /* Colorspace to decolde entering RenderIntermediatePass(). */
 
 //Gamma encoding expected for each step?
 #define RENODX_WORKINGGAMMA_AFTERTONEMAP RENODX_GAMMA_NONE
@@ -102,7 +103,7 @@
 #define RENODX_HDRTONEMAP_TYPE_HABLE 6
 #define RENODX_HDRTONEMAP_TYPE_EXPROLL 7
 #define RENODX_HDRTONEMAP_TYPE_CUSTOM1 8
-#define RENODX_HDRTONEMAP_TYPE RENODX_HDRTONEMAP_TYPE_DEFAULT //[RENODX_HDRTONEMAP_TYPE_OFF RENODX_HDRTONEMAP_TYPE_REINHARD RENODX_HDRTONEMAP_TYPE_ACES RENODX_HDRTONEMAP_TYPE_GT RENODX_HDRTONEMAP_TYPE_GT7 RENODX_HDRTONEMAP_TYPE_HERMITE RENODX_HDRTONEMAP_TYPE_EXPROLL]
+#define RENODX_HDRTONEMAP_TYPE_NEUTWO 9
 
 //Tonemap: Reinhard
 //nothing 
@@ -138,6 +139,9 @@
 #define RENODX_HABLE_W 11.00 //[0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90 0.95 1.00 1.05 1.10 1.15 1.20 1.25 1.30 1.35 1.40 1.45 1.50 1.55 1.60 1.65 1.70 1.75 1.80 1.85 1.90 1.95 2.00 2.05 2.10 2.15 2.20 2.25 2.30 2.35 2.40 2.45 2.50 2.55 2.60 2.65 2.70 2.75 2.80 2.85 2.90 2.95 3.00 3.05 3.10 3.15 3.20 3.25 3.30 3.35 3.40 3.45 3.50 3.55 3.60 3.65 3.70 3.75 3.80 3.85 3.90 3.95 4.00 4.05 4.10 4.15 4.20 4.25 4.30 4.35 4.40 4.45 4.50 4.55 4.60 4.65 4.70 4.75 4.80 4.85 4.90 4.95 5.00 5.05 5.10 5.15 5.20 5.25 5.30 5.35 5.40 5.45 5.50 5.55 5.60 5.65 5.70 5.75 5.80 5.85 5.90 5.95 6.00 6.05 6.10 6.15 6.20 6.25 6.30 6.35 6.40 6.45 6.50 6.55 6.60 6.65 6.70 6.75 6.80 6.85 6.90 6.95 7.00 7.05 7.10 7.15 7.20 7.25 7.30 7.35 7.40 7.45 7.50 7.55 7.60 7.65 7.70 7.75 7.80 7.85 7.90 7.95 8.00 8.05 8.10 8.15 8.20 8.25 8.30 8.35 8.40 8.45 8.50 8.55 8.60 8.65 8.70 8.75 8.80 8.85 8.90 8.95 9.00 9.05 9.10 9.15 9.20 9.25 9.30 9.35 9.40 9.45 9.50 9.55 9.60 9.65 9.70 9.75 9.80 9.85 9.90 9.95 10.00 10.05 10.10 10.15 10.20 10.25 10.30 10.35 10.40 10.45 10.50 10.55 10.60 10.65 10.70 10.75 10.80 10.85 10.90 10.95 11.00 11.05 11.10 11.15 11.20 11.25 11.30 11.35 11.40 11.45 11.50 11.55 11.60 11.65 11.70 11.75 11.80 11.85 11.90 11.95 12.00 12.05 12.10 12.15 12.20 12.25 12.30 12.35 12.40 12.45 12.50 12.55 12.60 12.65 12.70 12.75 12.80 12.85 12.90 12.95 13.00 13.05 13.10 13.15 13.20 13.25 13.30 13.35 13.40 13.45 13.50 13.55 13.60 13.65 13.70 13.75 13.80 13.85 13.90 13.95 14.00 14.05 14.10 14.15 14.20 14.25 14.30 14.35 14.40 14.45 14.50 14.55 14.60 14.65 14.70 14.75 14.80 14.85 14.90 14.95 15.00 15.05 15.10 15.15 15.20 15.25 15.30 15.35 15.40 15.45 15.50 15.55 15.60 15.65 15.70 15.75 15.80 15.85 15.90 15.95 16.00 16.05 16.10 16.15 16.20 16.25 16.30 16.35 16.40 16.45 16.50 16.55 16.60 16.65 16.70 16.75 16.80 16.85 16.90 16.95 17.00 17.05 17.10 17.15 17.20 17.25 17.30 17.35 17.40 17.45 17.50 17.55 17.60 17.65 17.70 17.75 17.80 17.85 17.90 17.95 18.00 18.05 18.10 18.15 18.20 18.25 18.30 18.35 18.40 18.45 18.50 18.55 18.60 18.65 18.70 18.75 18.80 18.85 18.90 18.95 19.00 19.05 19.10 19.15 19.20 19.25 19.30 19.35 19.40 19.45 19.50 19.55 19.60 19.65 19.70 19.75 19.80 19.85 19.90 19.95 20.00]
 
 //Tonemap: Exponential Rolloff
+//nothing
+
+//Tonemap: NeuTwo
 //nothing
 
 //RenderIntermediatePass
@@ -2314,6 +2318,168 @@ vec3 ToneMapPass_Custom0(vec3 color) { //TODO:
   return color;
 }
 
+// NeuTwo ///////////////////////////////////////////////////////////////////////////
+// Neutral tonemap
+// Based on power of 2 (squared/sqrt)
+// Naka-Rushton/Reinhard style tonemapper x/(x^2+k)^(1/2)
+// Newton-Raphson friendly with rsqrt (faster than division)
+// f'''(x) = 0 at x = 0.5 (half peak)
+// https://www.desmos.com/calculator/gy1edro6nd
+// Polar/Cartesian form of peak * cos(atan2(x, peak))
+// Invertible with same complexity as forward
+
+// f\left(x\right)=\frac{x}{\sqrt{xx+1}}
+// float Neutwo(float x) {
+//   // also written as x * rhypot(x, 1.0)
+//   float numerator = x;
+//   float denominator_squared = (x * x + 1.0);
+//   return numerator * inversesqrt(denominator_squared);
+// }
+// 
+// // f_{p}\left(x\right)=\frac{px}{\sqrt{xx+pp}}
+// float Neutwo(float x, float peak) {
+//   // also written as x * rhypot(x, peak)
+//   float p = peak;
+// 
+//   float numerator = p * x;
+//   float denominator_squared = (x * x + (p * p));
+//   return numerator * inversesqrt(denominator_squared);
+// }
+
+// f_{c}\left(x\right)=\frac{cpx}{\sqrt{xx\cdot\left(cc-pp\right)+\left(cc\cdot pp\right)}}
+float Neutwo(float x, float peak, float clip) {
+  float p = peak;
+  float c = clip;
+  float cc = c * c;
+  float pp = p * p;
+  float xx = x * x;
+
+  float numerator = c * p * x;
+  float denominator_squared = (xx * (cc - pp) + (cc * pp));
+
+  return numerator * inversesqrt(denominator_squared);
+}
+vec3 Neutwo(vec3 x, float peak, float clip) {
+  float p = peak;
+  float c = clip;
+  float cc = c * c;
+  float pp = p * p;
+  vec3 xx = x * x;
+
+  vec3 numerator = c * p * x;
+  vec3 denominator_squared = (xx * (cc - pp) + (cc * pp));
+
+  return numerator * inversesqrt(denominator_squared);
+}
+
+// f_{g}\left(x\right)=\frac{pgx\left(cc-gg\right)}{\sqrt{\left(cc-gg\right)\cdot gg\cdot\left(xx\cdot\left(cc-pp\right)+cc\cdot\left(pp-gg\right)\right)}}
+float Neutwo(float x, float peak, float clip, float gray) {
+  float p = peak;
+  float g = gray;
+  float c = clip;
+
+  float cc = c * c;
+  float pp = p * p;
+  float gg = g * g;
+  float xx = x * x;
+  float cc_minus_gg = cc - gg;
+
+  float numerator = p * g * x * cc_minus_gg;
+  float denominator_squared = cc_minus_gg * gg * (xx * (cc - pp) + (cc * (pp - gg)));
+  return numerator * inversesqrt(denominator_squared);
+}
+vec3 Neutwo(vec3 x, float peak, float clip, float gray) {
+  float p = peak;
+  float g = gray;
+  float c = clip;
+
+  float cc = c * c;
+  float pp = p * p;
+  float gg = g * g;
+  vec3 xx = x * x;
+  float cc_minus_gg = cc - gg;
+
+  vec3 numerator = p * g * x * cc_minus_gg;
+  vec3 denominator_squared = cc_minus_gg * gg * (xx * (cc - pp) + (cc * (pp - gg)));
+  return numerator * inversesqrt(denominator_squared);
+}
+
+// // f_{o}\left(x\right)=\frac{pox\left(cc-gg\right)}{\sqrt{\left(cc-gg\right)\cdot\left(xx\cdot\left(ccoo-ppgg\right)+ccgg\cdot\left(pp-oo\right)\right)}}
+// float Neutwo(float x, float peak, float clip, float gray_in, float gray_out) {
+//   float p = peak;
+//   float g = gray_in;
+//   float o = gray_out;
+// 
+//   float cc = clip * clip;
+//   float pp = peak * peak;
+//   float gg = g * g;
+//   float oo = o * o;
+//   float xx = x * x;
+// 
+//   float cc_minus_gg = cc - gg;
+// 
+//   float numerator = p * o * x * cc_minus_gg;
+// 
+//   float ccoo = cc * oo;
+//   float ppgg = pp * gg;
+//   float ccgg = cc * gg;
+// 
+//   float denominator_squared = cc_minus_gg * (xx * (ccoo - ppgg) + (ccgg * (pp - oo)));
+// 
+//   return numerator * inversesqrt(denominator_squared);
+// }
+//
+// // f_{m}\left(x\right)=\frac{qzx\left(cc-gg\right)}{\sqrt{\left(cc-gg\right)\cdot\left(xx\cdot\left(cczz-qqgg\right)+ccgg\cdot\left(qq-zz\right)\right)}}+m
+// float Neutwo(float x, float peak, float clip, float gray_in, float gray_out, float minimum) {
+//   float m = minimum;
+//   float g = gray_in;
+//   float z = gray_out - m;
+//   float q = peak - m;
+//   float c = clip;
+// 
+//   float cc = c * c;
+//   float gg = g * g;
+//   float cc_minus_gg = cc - gg;
+// 
+//   float numerator = q * z * x * cc_minus_gg;
+// 
+//   float xx = x * x;
+//   float zz = z * z;
+//   float qq = q * q;
+// 
+//   float cczz = cc * zz;
+//   float qqgg = qq * gg;
+//   float ccgg = cc * gg;
+// 
+//   float denominator_squared = cc_minus_gg * (xx * (cczz - qqgg) + ccgg * (qq - zz));
+// 
+//   return (numerator * inversesqrt(denominator_squared) + m);
+// }
+
+vec3 ToneMapPass_NeuTwo(vec3 color) {
+  //setup
+  const float p = RENODX_PEAK_BRIGHTNESS. / RENODX_GAME_BRIGHTNESS.; // Peak (nits)
+  const float w = RENODX_WHITE_CLIP; // white clip
+
+  //do
+  color = WorkingColorSpace_Shaderpack_To_HDRTonemap(color);
+  #if RENODX_SCALING == RENODX_SCALING_Y || RENODX_SCALING == RENODX_SCALING_MAXCHANNEL
+    float y = YOrMaxChannelForHDRTonemap(color);
+    if (y > 0) {
+      float y1 = Neutwo(y, p, w/* , 0.18 */);
+      color *= y1 / y;
+    }
+  #else
+    vec3 s = Sign(color);
+    color = abs(color);
+    color = Neutwo(color, p, w/* , 0.18 */);
+    color *= s;
+  #endif
+  color = WorkingColorSpace_HDRTonemap_To_AfterTonemap(color);
+
+  return color;
+}
+
 // None ///////////////////////////////////////////////////////////////////////////
 vec3 ToneMapPass_None(vec3 color) {
   color = ColorSpaceConversion(color, RENODX_WORKINGCS_SHADERPACK, RENODX_WORKINGCS_AFTERTONEMAP);
@@ -2375,6 +2541,8 @@ vec3 ToneMapPass(vec3 color_untonemapped, vec3 color_tonemapped, vec2 uv) {
       result = ToneMapPass_Hable(result);
     #elif RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_EXPROLL
       result = ToneMapPass_ExponentialRollOff(result);
+    #elif RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_NEUTWO
+      result = ToneMapPass_NeuTwo(result);
     #elif RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_CUSTOM1
       result = ToneMapPass_Custom0(result);
     #else
@@ -2429,7 +2597,7 @@ vec3 RenderIntermediatePass(vec3 color) {
 screen.renodx = RENODX_PEAK_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_UI_BRIGHTNESS <empty> \
 RENODX_UPGRADE_ENABLED RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO <empty> \
 RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION RENODX_EXPOSURE <empty> \
-RENODX_HDRTONEMAP_TYPE [renodx_reinhard] [renodx_aces] [renodx_gt] [renodx_gt7] [renodx_hermite] [renodx_exproll] [renodx_hable] <empty> \
+RENODX_HDRTONEMAP_TYPE [renodx_reinhard] [renodx_aces] [renodx_gt] [renodx_gt7] [renodx_hermite] [renodx_exproll] [renodx_hable] [renodx_neutwo] <empty> \
 RENODX_GAMMACORRECTION RENODX_INTER_MODE RENODX_DEBUG
 screen.renodx.columns = 1
 
@@ -2454,10 +2622,13 @@ screen.renodx_exproll.columns = 1
 screen.renodx_hable = RENODX_SCALING RENODX_WORKINGCS_HDRTONEMAP RENODX_SHOULDER_START RENODX_HABLE_A RENODX_HABLE_B RENODX_HABLE_C RENODX_HABLE_D RENODX_HABLE_E RENODX_HABLE_F RENODX_HABLE_W RENODX_HABLE_BLOWOUT
 screen.renodx_hable.columns = 1
 
+screen.renodx_neutwo = RENODX_SCALING RENODX_WORKINGCS_HDRTONEMAP RENODX_WHITE_CLIP 
+screen.renodx_neutwo.columns = 1
+
 //////////////////// shaders.properties sliders 
 RENODX_PEAK_BRIGHTNESS RENODX_UI_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_SHOULDER_START RENODX_WHITE_CLIP RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION RENODX_EXPOSURE RENODX_ACES_MIDGRAY RENODX_GT_A RENODX_GT_M RENODX_GT_L RENODX_GT_C RENODX_GT_B RENODX_GT7_A RENODX_GT7_M RENODX_GT7_L RENODX_GT7_C RENODX_GT7_BLOW_AMOUNT RENODX_GT7_BLOW_START RENODX_GT7_BLOW_END RENODX_HABLE_A RENODX_HABLE_B RENODX_HABLE_C RENODX_HABLE_D RENODX_HABLE_E RENODX_HABLE_F RENODX_HABLE_W RENODX_HABLE_BLOWOUT \
 
-//////////////////// language
+//////////////////// en_US.lang
 # RenoDX Screens
 screen.renodx = RenoDX
 screen.renodx_reinhard = Reinhard Piecewise Settings
@@ -2474,6 +2645,8 @@ screen.renodx_hable = Uncharted 2 / Hable Settings
 screen.renodx_hable.comment = From Uncharted 2 by John Hable, with toe, lienar extended to HDR.
 screen.renodx_exproll = Exponential Roll-off Settings
 screen.renodx_exproll.comment = From DICE's Frostbite, aggressive shoulder roll-off.
+screen.renodx_neutwo = NeuTwo Settings
+screen.renodx_neutwo.comment = Neutral tonemapper based on power of 2 (squared/sqrt). Similar to Reinhard.
 
 # RenoDX Main
 option.RENODX_ENABLED = Enabled
@@ -2566,6 +2739,7 @@ value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_HERMITE = Hermite Spline
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_GT7 = Gran Turismo 7
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_HABLE = Uncharted 2 / Hable
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_EXPROLL = Exponential Roll-off
+value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_NEUTWO = NeuTwo
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_DEFAULT = Default
 
 option.RENODX_WORKINGCS_HDRTONEMAP = HDR Tone Map Working Color Space

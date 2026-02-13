@@ -759,7 +759,6 @@ option.BOX_LINE_WIDTH           = Line Width
 
 
 
-
 # RenoDX Screens
 screen.renodx = RenoDX
 screen.renodx_reinhard = Reinhard Piecewise Settings
@@ -776,6 +775,8 @@ screen.renodx_hable = Uncharted 2 / Hable Settings
 screen.renodx_hable.comment = From Uncharted 2 by John Hable, with toe, lienar extended to HDR.
 screen.renodx_exproll = Exponential Roll-off Settings
 screen.renodx_exproll.comment = From DICE's Frostbite, aggressive shoulder roll-off.
+screen.renodx_neutwo = NeuTwo Settings
+screen.renodx_neutwo.comment = Neutral tonemapper based on power of 2 (squared/sqrt). Similar to Reinhard.
 
 # RenoDX Main
 option.RENODX_ENABLED = Enabled
@@ -839,7 +840,7 @@ option.RENODX_WORKINGCOLORSPACE.comment = The color space of the shaderpack's re
 
 # RenoDX Upgrade
 option.RENODX_UPGRADE_ENABLED = Upgrade Tone Map (BT709 Clamp)
-option.RENODX_UPGRADE_ENABLED.comment = Map SDR chroma on HDR luma.
+option.RENODX_UPGRADE_ENABLED.comment = Naive map SDR chroma on HDR luma.
 
 option.RENODX_UPGRADE_AMOUNT = Upgrade Amount
 option.RENODX_UPGRADE_AMOUNT.comment = How much should the HDR color be influenced by the SDR?
@@ -868,6 +869,7 @@ value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_HERMITE = Hermite Spline
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_GT7 = Gran Turismo 7
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_HABLE = Uncharted 2 / Hable
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_EXPROLL = Exponential Roll-off
+value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_NEUTWO = NeuTwo
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_DEFAULT = Default
 
 option.RENODX_WORKINGCS_HDRTONEMAP = HDR Tone Map Working Color Space
