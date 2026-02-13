@@ -779,6 +779,8 @@ screen.renodx_neutwo = NeuTwo Settings
 screen.renodx_neutwo.comment = Neutral tonemapper based on power of 2 (squared/sqrt).
 screen.renodx_frostbite = Frostbite Settings
 screen.renodx_frostbite.comment = DICE's perceptual tonemapper with saturation boost and hue preservation.
+screen.renodx_daniele = Daniele Settings
+screen.renodx_daniele.comment = Daniele Siragusano's compression curve with a lot of variables. 
 
 # RenoDX Main
 option.RENODX_ENABLED = Enabled
@@ -884,6 +886,7 @@ value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_HABLE = Uncharted 2 / Hable
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_EXPROLL = Exponential Roll-off
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_NEUTWO = NeuTwo
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_FROSTBITE = Frostbite
+value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_DANIELE = Daniele
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_DEFAULT = Default
 
 option.RENODX_WORKINGCS_HDRTONEMAP = HDR Tone Map Working Color Space
@@ -951,8 +954,18 @@ option.RENODX_HABLE_W = White Point
 option.RENODX_HABLE_BLOWOUT = Blowout
 option.RENODX_HABLE_BLOWOUT.comment = Blend SDR blowout on hightlights.
 
+#Frostbite
 option.RENODX_FROSTBITE_SAT = Saturation Boost
 option.RENODX_FROSTBITE_HUE = Hue Preservation
+
+#Daniele
+option.RENODX_DANIELE_G = Surround/Contrast
+option.RENODX_DANIELE_C = Scene-referred Gray
+option.RENODX_DANIELE_C_D = Output Gray in nits
+option.RENODX_DANIELE_W_G = Gray Change
+option.RENODX_DANIELE_T_1 = Shadow Toe
+option.RENODX_DANIELE_R_HIT_MIN = Minimum Hit Nits
+option.RENODX_DANIELE_R_HIT_MAX = Maximum Hit Nits
 
 #RenderIntermediatePass
 option.RENODX_INTER_MODE = Intermediate Pass Mode

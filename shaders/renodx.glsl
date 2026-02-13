@@ -4,14 +4,14 @@
 //#define RENODX_UPGRADE_ENABLED
 
 //HDR Tonemap settings
-#define RENODX_HDRTONEMAP_TYPE RENODX_HDRTONEMAP_TYPE_NEUTWO //[RENODX_HDRTONEMAP_TYPE_OFF RENODX_HDRTONEMAP_TYPE_REINHARD RENODX_HDRTONEMAP_TYPE_ACES RENODX_HDRTONEMAP_TYPE_GT RENODX_HDRTONEMAP_TYPE_GT7 RENODX_HDRTONEMAP_TYPE_HERMITE RENODX_HDRTONEMAP_TYPE_EXPROLL RENODX_HDRTONEMAP_TYPE_NEUTWO RENODX_HDRTONEMAP_TYPE_FROSTBITE]
+#define RENODX_HDRTONEMAP_TYPE RENODX_HDRTONEMAP_TYPE_REINHARD //[RENODX_HDRTONEMAP_TYPE_OFF RENODX_HDRTONEMAP_TYPE_REINHARD RENODX_HDRTONEMAP_TYPE_ACES RENODX_HDRTONEMAP_TYPE_GT RENODX_HDRTONEMAP_TYPE_GT7 RENODX_HDRTONEMAP_TYPE_HERMITE RENODX_HDRTONEMAP_TYPE_EXPROLL RENODX_HDRTONEMAP_TYPE_NEUTWO RENODX_HDRTONEMAP_TYPE_FROSTBITE]
 
 //Color space expected for each step
 #define RENODX_WORKINGCS_SHADERPACK RENODX_CS_AP1 /* Internal working color space of shaderpack. */
 #define RENODX_WORKINGCS_HDRTONEMAP RENODX_CS_BT2020 //[RENODX_CS_BT709 RENODX_CS_BT2020 RENODX_CS_AP1] /* Colorspace to do perchannel HDR tonemap. */
 #define RENODX_WORKINGCS_AFTERTONEMAP RENODX_CS_AP1 /* Colorspace to encode leaving ToneMapPass(). */
 #define RENODX_WORKINGCS_AFTERTONEMAP_DOCLAMP 1 /* Clamp after ToneMapPass? */
-#define RENODX_WORKINGCS_RENDERINTERMEDIATEPASSINPUT RENODX_CS_AP1 /* Colorspace to decolde entering RenderIntermediatePass(). */
+#define RENODX_WORKINGCS_RENDERINTERMEDIATEPASSINPUT RENODX_CS_AP1 /* Colorspace to decode entering RenderIntermediatePass(). */
 
 //Gamma encoding expected for each step
 #define RENODX_WORKINGGAMMA_AFTERTONEMAP RENODX_GAMMA_NONE /* Gamma encoding to encode leaving ToneMapPass(). */
@@ -23,7 +23,7 @@
 # RenoDX
 screen.renodx = RENODX_PEAK_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_UI_BRIGHTNESS <empty> \
 RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION <empty> \
-RENODX_HDRTONEMAP_TYPE RENODX_EXPOSURE [renodx_reinhard] [renodx_aces] [renodx_gt] [renodx_gt7] [renodx_hermite] [renodx_exproll] [renodx_hable] [renodx_neutwo] [renodx_frostbite] <empty> \
+RENODX_HDRTONEMAP_TYPE RENODX_EXPOSURE [renodx_reinhard] [renodx_aces] [renodx_gt] [renodx_gt7] [renodx_hermite] [renodx_exproll] [renodx_hable] [renodx_neutwo] [renodx_frostbite] [renodx_daniele] <empty> \
 RENODX_RCAS RENODX_RCAS_DENOISE <empty> \
 RENODX_GAMMACORRECTION RENODX_INTER_MODE <empty> \
 RENODX_UPGRADE_ENABLED RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_APPC_AMOUNT RENODX_APPC_POW RENODX_DEBUG
@@ -56,8 +56,11 @@ screen.renodx_neutwo.columns = 1
 screen.renodx_frostbite = RENODX_SCALING RENODX_SHOULDER_START RENODX_FROSTBITE_SAT RENODX_FROSTBITE_HUE
 screen.renodx_neutwo.columns = 1
 
+screen.renodx_daniele RENODX_SCALING RENODX_DANIELE_G RENODX_DANIELE_C RENODX_DANIELE_C_D RENODX_DANIELE_W_G RENODX_DANIELE_T_1 RENODX_DANIELE_R_HIT_MIN RENODX_DANIELE_R_HIT_MAX
+screen.renodx_neutwo.columns = 1
+
 //////////////////// shaders.properties sliders 
-RENODX_PEAK_BRIGHTNESS RENODX_UI_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_SHOULDER_START RENODX_WHITE_CLIP RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_APPC_AMOUNT RENODX_APPC_POW RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION RENODX_RCAS RENODX_EXPOSURE RENODX_ACES_MIDGRAY RENODX_GT_A RENODX_GT_M RENODX_GT_L RENODX_GT_C RENODX_GT_B RENODX_GT7_A RENODX_GT7_M RENODX_GT7_L RENODX_GT7_C RENODX_GT7_BLOW_AMOUNT RENODX_GT7_BLOW_START RENODX_GT7_BLOW_END RENODX_HABLE_A RENODX_HABLE_B RENODX_HABLE_C RENODX_HABLE_D RENODX_HABLE_E RENODX_HABLE_F RENODX_HABLE_W RENODX_HABLE_BLOWOUT RENODX_FROSTBITE_SAT RENODX_FROSTBITE_HUE \
+RENODX_PEAK_BRIGHTNESS RENODX_UI_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_SHOULDER_START RENODX_WHITE_CLIP RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_APPC_AMOUNT RENODX_APPC_POW RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION RENODX_RCAS RENODX_EXPOSURE RENODX_ACES_MIDGRAY RENODX_GT_A RENODX_GT_M RENODX_GT_L RENODX_GT_C RENODX_GT_B RENODX_GT7_A RENODX_GT7_M RENODX_GT7_L RENODX_GT7_C RENODX_GT7_BLOW_AMOUNT RENODX_GT7_BLOW_START RENODX_GT7_BLOW_END RENODX_HABLE_A RENODX_HABLE_B RENODX_HABLE_C RENODX_HABLE_D RENODX_HABLE_E RENODX_HABLE_F RENODX_HABLE_W RENODX_HABLE_BLOWOUT RENODX_FROSTBITE_SAT RENODX_FROSTBITE_HUE RENODX_DANIELE_G RENODX_DANIELE_C RENODX_DANIELE_C_D RENODX_DANIELE_W_G RENODX_DANIELE_T_1 RENODX_DANIELE_R_HIT_MIN RENODX_DANIELE_R_HIT_MAX \
 
 //////////////////// en_US.lang
 # RenoDX Screens
@@ -80,6 +83,8 @@ screen.renodx_neutwo = NeuTwo Settings
 screen.renodx_neutwo.comment = Neutral tonemapper based on power of 2 (squared/sqrt).
 screen.renodx_frostbite = Frostbite Settings
 screen.renodx_frostbite.comment = DICE's perceptual tonemapper with saturation boost and hue preservation.
+screen.renodx_daniele = Daniele Settings
+screen.renodx_daniele.comment = Daniele Siragusano's compression curve with a lot of variables. 
 
 # RenoDX Main
 option.RENODX_ENABLED = Enabled
@@ -185,6 +190,7 @@ value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_HABLE = Uncharted 2 / Hable
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_EXPROLL = Exponential Roll-off
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_NEUTWO = NeuTwo
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_FROSTBITE = Frostbite
+value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_DANIELE = Daniele
 value.RENODX_HDRTONEMAP_TYPE.RENODX_HDRTONEMAP_TYPE_DEFAULT = Default
 
 option.RENODX_WORKINGCS_HDRTONEMAP = HDR Tone Map Working Color Space
@@ -252,8 +258,18 @@ option.RENODX_HABLE_W = White Point
 option.RENODX_HABLE_BLOWOUT = Blowout
 option.RENODX_HABLE_BLOWOUT.comment = Blend SDR blowout on hightlights.
 
+#Frostbite
 option.RENODX_FROSTBITE_SAT = Saturation Boost
 option.RENODX_FROSTBITE_HUE = Hue Preservation
+
+#Daniele
+option.RENODX_DANIELE_G = Surround/Contrast
+option.RENODX_DANIELE_C = Scene-referred Gray
+option.RENODX_DANIELE_C_D = Output Gray in nits
+option.RENODX_DANIELE_W_G = Gray Change
+option.RENODX_DANIELE_T_1 = Shadow Toe
+option.RENODX_DANIELE_R_HIT_MIN = Minimum Hit Nits
+option.RENODX_DANIELE_R_HIT_MAX = Maximum Hit Nits
 
 #RenderIntermediatePass
 option.RENODX_INTER_MODE = Intermediate Pass Mode
@@ -347,6 +363,7 @@ value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 @ 203nits (BT2020)
 #define RENODX_HDRTONEMAP_TYPE_CUSTOM1 8
 #define RENODX_HDRTONEMAP_TYPE_NEUTWO 9
 #define RENODX_HDRTONEMAP_TYPE_FROSTBITE 10
+#define RENODX_HDRTONEMAP_TYPE_DANIELE 11
 
 //Tonemap: Reinhard
 //nothing 
@@ -391,6 +408,14 @@ value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 @ 203nits (BT2020)
 #define RENODX_FROSTBITE_SAT 1.00 //[0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34 0.35 0.36 0.37 0.38 0.39 0.40 0.41 0.42 0.43 0.44 0.45 0.46 0.47 0.48 0.49 0.50 0.51 0.52 0.53 0.54 0.55 0.56 0.57 0.58 0.59 0.60 0.61 0.62 0.63 0.64 0.65 0.66 0.67 0.68 0.69 0.70 0.71 0.72 0.73 0.74 0.75 0.76 0.77 0.78 0.79 0.80 0.81 0.82 0.83 0.84 0.85 0.86 0.87 0.88 0.89 0.90 0.91 0.92 0.93 0.94 0.95 0.96 0.97 0.98 0.99 1.00]
 #define RENODX_FROSTBITE_HUE 1.00 //[0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20 0.21 0.22 0.23 0.24 0.25 0.26 0.27 0.28 0.29 0.30 0.31 0.32 0.33 0.34 0.35 0.36 0.37 0.38 0.39 0.40 0.41 0.42 0.43 0.44 0.45 0.46 0.47 0.48 0.49 0.50 0.51 0.52 0.53 0.54 0.55 0.56 0.57 0.58 0.59 0.60 0.61 0.62 0.63 0.64 0.65 0.66 0.67 0.68 0.69 0.70 0.71 0.72 0.73 0.74 0.75 0.76 0.77 0.78 0.79 0.80 0.81 0.82 0.83 0.84 0.85 0.86 0.87 0.88 0.89 0.90 0.91 0.92 0.93 0.94 0.95 0.96 0.97 0.98 0.99 1.00]
 
+//Tonemap: Daniele
+#define RENODX_DANIELE_G 1.1 //[0.01 0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90 0.95 1.00 1.05 1.10 1.15 1.20 1.25 1.280 1.30 1.35 1.40 1.45 1.50 1.55 1.60 1.65 1.70 1.75 1.80 1.85 1.90]
+#define RENODX_DANIELE_C 0.18 //[0.01 0.02 0.03 0.04 0.05 0.06 0.07 0.08 0.09 0.10 0.11 0.12 0.13 0.14 0.15 0.16 0.17 0.18 0.19 0.20]
+#define RENODX_DANIELE_C_D 10.0 //[0.01 0.1 0.5 1.0 2.0 5.0 10.0 20.0 50.0 100.0 200.0 500.0 1000.0]
+#define RENODX_DANIELE_W_G 10.013 //[0.01 0.1 0.5 1.0 2.0 5.0 10.013 20.0 50.0 100.0 200.0 500.0 1000.0]
+#define RENODX_DANIELE_T_1 0.01 //[0.001 0.005 0.01 0.05 0.1 0.5 1.0 5.0 10.0]
+#define RENODX_DANIELE_R_HIT_MIN 128.0 //[0.01 0.1 1.0 10.0 50.0 100.0 128.0 150.0 200.0 256.0 300.0 500.0 1000.0]
+#define RENODX_DANIELE_R_HIT_MAX 256.0 //[0.01 0.1 1.0 10.0 50.0 100.0 128.0 150.0 200.0 256.0 300.0 500.0 1000.0]
 
 //RenderIntermediatePass
 #define RENODX_INTER_MODE RENODX_INTER_MODE_SRGB //[RENODX_INTER_MODE_SRGB RENODX_INTER_MODE_HDR10 RENODX_INTER_MODE_SCRGB]
@@ -2986,6 +3011,119 @@ vec3 ToneMapPass_Frostbite(vec3 color) {
 }
 #endif
 
+// Daniele ///////////////////////////////////////////////////////////////////////////
+
+// #if RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_DANIELE
+// // https://community.acescentral.com/t/output-transform-tone-scale/3498/213?page=12
+// // https://www.desmos.com/calculator/d37z5t5lr5
+// /*     
+// float n_r = 100.f,        // reference nits
+// float n = 1000.f,         // peak nits
+// float g = 1.1f,           // surround/contrast
+// float c = 0.18f,          // scene-referred gray
+// float c_d = 10.f,         // output gray in nits
+// float w_g = 10.013f,      // gray change
+// float t_1 = 0.01f,        // shadow toe
+// float r_hit_min = 128.f,  // minimum hit nits
+// float r_hit_max = 256.f   // maximum hit nits 
+// */
+// float Daniele(float x,
+//   float n_r,
+//   float n, 
+//   float g, 
+//   float c, 
+//   float c_d, 
+//   float w_g, 
+//   float t_1, 
+//   float r_hit_min,
+//   float r_hit_max
+// ) {
+//   float m_0 = (n / n_r);
+// 
+//   float m_1 = 0.5 * (m_0 + sqrt(m_0 * (m_0 + (4.0 * t_1))));
+//   float r_hit = r_hit_min + ((r_hit_max - r_hit_min) * (log(m_0) / log(10000.0 / 100.0)));
+// 
+//   float u = pow((r_hit / m_1) / ((r_hit / m_1) + 1.0), g);
+//   float m = m_1 / u;
+//   float w_i = log(n / 100.0) / log(2.0);
+//   float c_t = (c_d / n_r) * (1.0 + (w_i * w_g));
+//   float g_ip = 0.5 * (c_t + sqrt(c_t * (c_t + (4.0 * t_1))));
+//   float g_ipp2 = -m_1 * pow(g_ip / m, 1.0 / g) / (pow(g_ip / m, 1.0 / g) - 1.0);
+//   float w_2 = c / g_ipp2;
+//   float s_2 = w_2 * m_1;
+//   float u_2 = pow((r_hit / m_1) / ((r_hit / m_1) + w_2), g);
+//   float m_2 = m_1 / u_2;
+// 
+//   float ts = pow(max(0, x) / (x + s_2), g) * m_2;
+//   float flared = max(0, (ts * ts) / (ts + t_1));
+// 
+//   return flared;
+// }
+// vec3 Daniele(vec3 x,
+//   float n_r,
+//   float n, 
+//   float g, 
+//   float c, 
+//   float c_d, 
+//   float w_g, 
+//   float t_1, 
+//   float r_hit_min,
+//   float r_hit_max
+// ) {
+//   float m_0 = (n / n_r);
+// 
+//   float m_1 = 0.5 * (m_0 + sqrt(m_0 * (m_0 + (4.0 * t_1))));
+//   float r_hit = r_hit_min + ((r_hit_max - r_hit_min) * (log(m_0) / log(10000.0 / 100.0)));
+// 
+//   float u = pow((r_hit / m_1) / ((r_hit / m_1) + 1.0), g);
+//   float m = m_1 / u;
+//   float w_i = log(n / 100.0) / log(2.0);
+//   float c_t = (c_d / n_r) * (1.0 + (w_i * w_g));
+//   float g_ip = 0.5 * (c_t + sqrt(c_t * (c_t + (4.0 * t_1))));
+//   float g_ipp2 = -m_1 * pow(g_ip / m, 1.0 / g) / (pow(g_ip / m, 1.0 / g) - 1.0);
+//   float w_2 = c / g_ipp2;
+//   float s_2 = w_2 * m_1;
+//   float u_2 = pow((r_hit / m_1) / ((r_hit / m_1) + w_2), g);
+//   float m_2 = m_1 / u_2;
+// 
+//   vec3 ts = pow(max(vec3(0), x) / (x + s_2), vec3(g)) * m_2;
+//   vec3 flared = max(vec3(0), (ts * ts) / (ts + t_1));
+// 
+//   return flared;
+// }
+// 
+// vec3 ToneMapPass_Daniele(vec3 color) {
+//   //setup
+//   const float n_r = 100.f / RENODX_GAME_BRIGHTNESS.;        // reference nits
+//   const float n = RENODX_PEAK_BRIGHTNESS.;           // peak nits
+//   const float g =         RENODX_DANIELE_G;          // surround/contrast
+//   const float c =         RENODX_DANIELE_C;          // scene-referred gray
+//   const float c_d =       RENODX_DANIELE_C_D;        // output gray in nits
+//   const float w_g =       RENODX_DANIELE_W_G;        // gray change
+//   const float t_1 =       RENODX_DANIELE_T_1;        // shadow toe
+//   const float r_hit_min = RENODX_DANIELE_R_HIT_MIN;  // minimum hit nits
+//   const float r_hit_max = RENODX_DANIELE_R_HIT_MAX;  // maximum hit nits
+// 
+//   //do
+//   color = WorkingColorSpace_Shaderpack_To_HDRTonemap(color);
+//   #if RENODX_SCALING == RENODX_SCALING_Y || RENODX_SCALING == RENODX_SCALING_MAXCHANNEL
+//     float y = YOrMaxChannelForHDRTonemap(color);
+//     if (y > 0) {
+//       float y1 = Daniele(y, n_r, n, g, c, c_d, w_g, t_1, r_hit_min, r_hit_max);
+//       color *= y1 / y;
+//     }
+//   #else
+//     vec3 s = Sign(color);
+//     color = abs(color);
+//     color = Daniele(color, n_r, n, g, c, c_d, w_g, t_1, r_hit_min, r_hit_max);
+//     color *= s;
+//   #endif
+//   color = WorkingColorSpace_HDRTonemap_To_AfterTonemap(color);
+// 
+//   return color;
+// }
+// #endif
+
 // None ///////////////////////////////////////////////////////////////////////////
 vec3 ToneMapPass_None(vec3 color) {
   color = ColorSpaceConversion(color, RENODX_WORKINGCS_SHADERPACK, RENODX_WORKINGCS_AFTERTONEMAP);
@@ -3051,6 +3189,8 @@ vec3 ToneMapPass(vec3 color_untonemapped, vec3 color_tonemapped, vec2 uv) {
       result = ToneMapPass_NeuTwo(result);
     #elif RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_FROSTBITE
       result = ToneMapPass_Frostbite(result);
+    // #elif RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_DANIELE
+    //   result = ToneMapPass_Daniele(result);
     #elif RENODX_HDRTONEMAP_TYPE == RENODX_HDRTONEMAP_TYPE_CUSTOM1
       result = ToneMapPass_Custom0(result);
     #else
