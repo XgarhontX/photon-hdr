@@ -813,7 +813,7 @@ value.RENODX_GAMMACORRECTION.RENODX_GAMMA_22  = 2.2
 value.RENODX_GAMMACORRECTION.RENODX_GAMMA_24 = 2.4
 
 option.RENODX_COLORGRADE_CONTRAST = Contrast
-option.RENODX_COLORGRADE_CONTRAST.comment = Stretches luminance if both ways around mid gray.
+option.RENODX_COLORGRADE_CONTRAST.comment = Stretches luminance both ways around mid gray.
 option.RENODX_COLORGRADE_CONTRAST_MID = Contrast Mid Gray
 option.RENODX_COLORGRADE_CONTRAST_MID.comments = The pivot point of the effect.
 
