@@ -1078,7 +1078,7 @@ vec3 RCASRenoDX(sampler2D colorTex, ivec2 uv , float sharpness, float paperWhite
     // denoise
     float nz = (bL + dL + fL + hL) * 0.25 - eL;
     float range = max(max(max(bL, dL), max(hL, fL)), eL) - min(min(min(bL, dL), min(eL, fL)), hL);
-    nz = clamp(abs(nz) * rcp(range),0,1);
+    nz = clamp(abs(nz) * (1/(range)),0,1);
     nz = -0.5 * nz + 1.0;
 #endif
 
@@ -1097,8 +1097,8 @@ vec3 RCASRenoDX(sampler2D colorTex, ivec2 uv , float sharpness, float paperWhite
     float minLum = max(min(min(bLum, dLum), min(fLum, hLum)), 0.0);
     float maxLum = max(max(bLum, dLum), max(fLum, hLum));
 
-    float hitMin = minLum * rcp(samplesNum * maxLum);
-    float hitMax = (peakC.x - maxLum) * rcp(samplesNum * minLum + peakC.y);
+    float hitMin = minLum * (1/(samplesNum * maxLum));
+    float hitMax = (peakC.x - maxLum) * (1/(samplesNum * minLum + peakC.y));
 
     float localLobe = max(-hitMin, hitMax);
 #else // !RCAS_LUMINANCE_BASED
@@ -1114,8 +1114,8 @@ vec3 RCASRenoDX(sampler2D colorTex, ivec2 uv , float sharpness, float paperWhite
     // Limiters, these need to use high precision reciprocal operations.
     // Decided to use standard rcp for now in hopes of optimizing it.
     // It's fine if either of these can go below zero!
-    vec3 hitMin = minRGB * rcp(samplesNum * maxRGB);
-    vec3 hitMax = (peakC.xxx - maxRGB) * rcp(samplesNum * minRGB + peakC.yyy);
+    vec3 hitMin = minRGB * (1/(samplesNum * maxRGB));
+    vec3 hitMax = (peakC.xxx - maxRGB) * (1/(samplesNum * minRGB + peakC.yyy));
 
     vec3 lobeRGB = max(-hitMin, hitMax);
 #if 0 // An attempt to make this code, which branches by r g b channel, color space agnostic. Without this, the result heavily depends by where the rgb coordinates are in the CIE color graph, and by how luminous they are. Unfortunately this drastically reduces the sharpening intensity, even if it makes it look even more natural.
@@ -1133,7 +1133,7 @@ vec3 RCASRenoDX(sampler2D colorTex, ivec2 uv , float sharpness, float paperWhite
 #endif
 
     // Resolve, which needs medium precision rcp approximation to avoid visible tonality changes.
-    float rcpL = rcp(samplesNum * lobe + 1.0);
+    float rcpL = (1/(samplesNum * lobe + 1.0));
     
 #if RCAS_LUMINANCE_BASED
     float outputLum = ((bLum + dLum + hLum + fLum) * lobe + eLum) * rcpL;
