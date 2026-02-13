@@ -2724,6 +2724,8 @@ vec3 ToneMapPass_Custom0(vec3 color) { //TODO:
 }
 
 // NeuTwo ///////////////////////////////////////////////////////////////////////////
+// https://github.com/clshortfuse/renodx/blob/main/src/shaders/tonemap/neutwo.hlsl
+
 // Neutral tonemap
 // Based on power of 2 (squared/sqrt)
 // Naka-Rushton/Reinhard style tonemapper x/(x^2+k)^(1/2)
