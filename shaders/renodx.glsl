@@ -1,12 +1,32 @@
+//////////////////Defines: ShaderPack Specific
+
+//Do SDR onto HDR UpgradeToneMap()?
+//#define RENODX_UPGRADE_ENABLED
+
+//HDR Tonemap settings (User too, but changeable for a default setting)
+#define RENODX_HDRTONEMAP_TYPE RENODX_HDRTONEMAP_TYPE_NEUTWO //[RENODX_HDRTONEMAP_TYPE_OFF RENODX_HDRTONEMAP_TYPE_REINHARD RENODX_HDRTONEMAP_TYPE_ACES RENODX_HDRTONEMAP_TYPE_GT RENODX_HDRTONEMAP_TYPE_GT7 RENODX_HDRTONEMAP_TYPE_HERMITE RENODX_HDRTONEMAP_TYPE_EXPROLL RENODX_HDRTONEMAP_TYPE_NEUTWO]
+
+//Color space expected for each step
+#define RENODX_WORKINGCS_SHADERPACK RENODX_CS_AP1 /* Internal working color space of shaderpack. */
+#define RENODX_WORKINGCS_AFTERTONEMAP RENODX_CS_AP1 /* Colorspace to encode leaving ToneMapPass(). */
+#define RENODX_WORKINGCS_HDRTONEMAP RENODX_CS_BT2020 //[RENODX_CS_BT709 RENODX_CS_BT2020 RENODX_CS_AP1] /* Colorspace to do perchannel HDR tonemap. */
+#define RENODX_WORKINGCS_AFTERTONEMAP_DOCLAMP 1 /* Clamp after ToneMapPass? */
+#define RENODX_WORKINGCS_RENDERINTERMEDIATEPASSINPUT RENODX_CS_AP1 /* Colorspace to decolde entering RenderIntermediatePass(). */
+
+//Gamma encoding expected for each step
+#define RENODX_WORKINGGAMMA_AFTERTONEMAP RENODX_GAMMA_NONE /* Gamma encoding to encode leaving ToneMapPass(). */
+#define RENODX_WORKINGGAMMA_RENDERINTERMEDIATEPASSINPUT RENODX_GAMMA_20 /* Gamma encoding to decode entering RenderIntermediatePass(). */
+
+
 /*
 //////////////////// shaders.properties
 # RenoDX
 screen.renodx = RENODX_PEAK_BRIGHTNESS RENODX_GAME_BRIGHTNESS RENODX_UI_BRIGHTNESS <empty> \
-RENODX_UPGRADE_ENABLED RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_APPC_AMOUNT RENODX_APPC_POW <empty> \
 RENODX_COLORGRADE_HIGHLIGHTS RENODX_COLORGRADE_HIGHLIGHTS_MID RENODX_COLORGRADE_SHADOWS RENODX_COLORGRADE_SHADOWS_MID RENODX_COLORGRADE_CONTRAST RENODX_COLORGRADE_CONTRAST_MID RENODX_COLORGRADE_SATURATION <empty> \
 RENODX_HDRTONEMAP_TYPE RENODX_EXPOSURE [renodx_reinhard] [renodx_aces] [renodx_gt] [renodx_gt7] [renodx_hermite] [renodx_exproll] [renodx_hable] [renodx_neutwo] <empty> \
 RENODX_RCAS RENODX_RCAS_DENOISE <empty> \
-RENODX_GAMMACORRECTION RENODX_INTER_MODE RENODX_DEBUG
+RENODX_GAMMACORRECTION RENODX_INTER_MODE <empty> \
+RENODX_UPGRADE_ENABLED RENODX_UPGRADE_AMOUNT RENODX_UPGRADE_AUTO RENODX_APPC_AMOUNT RENODX_APPC_POW RENODX_DEBUG
 screen.renodx.columns = 1
 
 screen.renodx_reinhard = RENODX_SCALING RENODX_WORKINGCS_HDRTONEMAP RENODX_SHOULDER_START RENODX_WHITE_CLIP 
@@ -61,7 +81,7 @@ option.RENODX_ENABLED = Enabled
 option.RENODX_ENABLED.comment = Enable HDR.
 
 option.RENODX_UI_BRIGHTNESS = UI Brightness
-option.RENODX_UI_BRIGHTNESS.comment = In nits, remember to match in the ReShade effect settings!
+option.RENODX_UI_BRIGHTNESS.comment = In nits. Requires a shader after UI for this to take effect (i.e. ReShade, remember to sync value.)
 
 option.RENODX_GAME_BRIGHTNESS = Game Brightness
 option.RENODX_GAME_BRIGHTNESS.comment = In nits, aka paper white.
@@ -123,8 +143,8 @@ option.RENODX_WORKINGCOLORSPACE = Working Color Space
 option.RENODX_WORKINGCOLORSPACE.comment = The color space of the shaderpack's rendering pipeline.
 
 # RenoDX Upgrade
-option.RENODX_UPGRADE_ENABLED = Upgrade Tone Map (BT709 Clamp)
-option.RENODX_UPGRADE_ENABLED.comment = Naive map SDR chroma on HDR luma. This maintains all of SDR colorgrading, but will be quick to blowout.
+option.RENODX_UPGRADE_ENABLED = Upgrade Tone Map
+option.RENODX_UPGRADE_ENABLED.comment = (BT709 Clamp, and maybe not available.) Naively map SDR chroma on HDR luma. This maintains all of SDR colorgrading, but will be quick to blowout.
 
 option.RENODX_UPGRADE_AMOUNT = Upgrade Amount
 option.RENODX_UPGRADE_AMOUNT.comment = How much should the HDR color be influenced by the SDR?
@@ -235,25 +255,6 @@ value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 (BT2020)
 
 */
 
-//////////////////Defines: ShaderPack Specific
-
-//Do SDR onto HDR UpgradeToneMap()?
-//#define RENODX_UPGRADE_ENABLED
-
-//HDR Tonemap settings (User too, but changeable for a default setting)
-#define RENODX_HDRTONEMAP_TYPE RENODX_HDRTONEMAP_TYPE_NEUTWO //[RENODX_HDRTONEMAP_TYPE_OFF RENODX_HDRTONEMAP_TYPE_REINHARD RENODX_HDRTONEMAP_TYPE_ACES RENODX_HDRTONEMAP_TYPE_GT RENODX_HDRTONEMAP_TYPE_GT7 RENODX_HDRTONEMAP_TYPE_HERMITE RENODX_HDRTONEMAP_TYPE_EXPROLL RENODX_HDRTONEMAP_TYPE_NEUTWO]
-
-//Color space expected for each step
-#define RENODX_WORKINGCS_SHADERPACK RENODX_CS_AP1 /* Internal working color space of shaderpack. */
-#define RENODX_WORKINGCS_AFTERTONEMAP RENODX_CS_AP1 /* Colorspace to encode leaving ToneMapPass(). */
-#define RENODX_WORKINGCS_HDRTONEMAP RENODX_CS_BT2020 //[RENODX_CS_BT709 RENODX_CS_BT2020 RENODX_CS_AP1] /* Colorspace to do perchannel HDR tonemap. */
-#define RENODX_WORKINGCS_AFTERTONEMAP_DOCLAMP 1 /* Clamp after ToneMapPass? */
-#define RENODX_WORKINGCS_RENDERINTERMEDIATEPASSINPUT RENODX_CS_AP1 /* Colorspace to decolde entering RenderIntermediatePass(). */
-
-//Gamma encoding expected for each step
-#define RENODX_WORKINGGAMMA_AFTERTONEMAP RENODX_GAMMA_NONE /* Gamma encoding to encode leaving ToneMapPass(). */
-#define RENODX_WORKINGGAMMA_RENDERINTERMEDIATEPASSINPUT RENODX_GAMMA_20 /* Gamma encoding to decode entering RenderIntermediatePass(). */
-
 //////////////////Defines: User
 //Main
 #define RENODX_ENABLED /* Deprecated */
@@ -270,8 +271,8 @@ value.RENODX_INTER_MODE.RENODX_INTER_MODE_HDR10 = HDR10 (BT2020)
 #define RENODX_UPGRADE_AUTO 0.0 //[0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
 
 //ApplyPerChannelCorrection
-#define RENODX_APPC_AMOUNT 45 //[0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 100]
-#define RENODX_APPC_POW 1.75 //[0.00 0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90 0.95 1.00 1.05 1.10 1.15 1.20 1.25 1.30 1.35 1.40 1.45 1.50 1.55 1.60 1.65 1.70 1.75 1.80 1.85 1.90 1.95 2.00 2.05 2.10 2.15 2.20 2.25 2.30 2.35 2.40 2.45 2.50 2.55 2.60 2.65 2.70 2.75 2.80 2.85 2.90 2.95 3.00]
+#define RENODX_APPC_AMOUNT 65 //[0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 100]
+#define RENODX_APPC_POW 0.00 //[0.00 0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90 0.95 1.00 1.05 1.10 1.15 1.20 1.25 1.30 1.35 1.40 1.45 1.50 1.55 1.60 1.65 1.70 1.75 1.80 1.85 1.90 1.95 2.00 2.05 2.10 2.15 2.20 2.25 2.30 2.35 2.40 2.45 2.50 2.55 2.60 2.65 2.70 2.75 2.80 2.85 2.90 2.95 3.00]
 
 //Debug
 #define RENODX_DEBUG_NONE 0
@@ -712,7 +713,7 @@ vec3 ClampByMaxScaling(vec3 x, float peak) {
   float m = max(x.x, max(x.y, x.z));
   if (m > 0) 
     if (m > peak) 
-      x *= peak / x;
+      x *= peak / m;
   return x;
 }
 
@@ -1260,19 +1261,18 @@ vec3 ApplyPerChannelCorrection(vec3 untonemapped, vec3 per_channel_color) {
   ApplyPerChannelCorrectionResult result = ApplyPerChannelCorrection_Internal(
       untonemapped,
       per_channel_color,
-      0.5,
+      RENODX_APPC_AMOUNT / 100.,
       1.0,
       1.0,
-      0.5);
+      0.6);
 
   result.corrected_color = max(vec3(0), result.corrected_color);
-  result.corrected_color = ClampByMaxScaling(result.corrected_color, max(untonemapped.x, max(untonemapped.y, untonemapped.z)));
+  result.corrected_color = ClampByMaxScaling(result.corrected_color, 1);
 
   #if RENODX_APPC_POW > 0
     float strength = result.tonemapped_luminance;
     strength = clamp(strength, 0.0, 1.0);
     strength = pow(strength, RENODX_APPC_POW);
-    strength *= RENODX_APPC_AMOUNT * 0.01;
     return mix(per_channel_color, result.corrected_color, strength);
   #else
     return result.corrected_color;

@@ -783,7 +783,7 @@ option.RENODX_ENABLED = Enabled
 option.RENODX_ENABLED.comment = Enable HDR.
 
 option.RENODX_UI_BRIGHTNESS = UI Brightness
-option.RENODX_UI_BRIGHTNESS.comment = In nits, remember to match in the ReShade effect settings!
+option.RENODX_UI_BRIGHTNESS.comment = In nits. Requires a shader after UI for this to take effect (i.e. ReShade, remember to sync value.)
 
 option.RENODX_GAME_BRIGHTNESS = Game Brightness
 option.RENODX_GAME_BRIGHTNESS.comment = In nits, aka paper white.
@@ -845,8 +845,8 @@ option.RENODX_WORKINGCOLORSPACE = Working Color Space
 option.RENODX_WORKINGCOLORSPACE.comment = The color space of the shaderpack's rendering pipeline.
 
 # RenoDX Upgrade
-option.RENODX_UPGRADE_ENABLED = Upgrade Tone Map (BT709 Clamp)
-option.RENODX_UPGRADE_ENABLED.comment = Naive map SDR chroma on HDR luma. This maintains all of SDR colorgrading, but will be quick to blowout.
+option.RENODX_UPGRADE_ENABLED = Upgrade Tone Map
+option.RENODX_UPGRADE_ENABLED.comment = (BT709 Clamp, and maybe not available.) Naively map SDR chroma on HDR luma. This maintains all of SDR colorgrading, but will be quick to blowout.
 
 option.RENODX_UPGRADE_AMOUNT = Upgrade Amount
 option.RENODX_UPGRADE_AMOUNT.comment = How much should the HDR color be influenced by the SDR?
