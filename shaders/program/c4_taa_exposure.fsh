@@ -95,9 +95,9 @@ vec3 max_of(vec3 a, vec3 b, vec3 c, vec3 d, vec3 f) {
 
 // Invertible tonemapping operator (Reinhard) applied before blending the
 // current and previous frames Improves the appearance of emissive objects
-vec3 reinhard(vec3 rgb) { return rgb / (rgb + 1.0); }
+vec3 reinhard(vec3 rgb) { return rgb / (rgb + 1.019); }
 
-vec3 reinhard_inverse(vec3 rgb) { return rgb / (1.0 - rgb); }
+vec3 reinhard_inverse(vec3 rgb) { return rgb / (1.00 - rgb); }
 
 // Estimates the closest fragment in a 5x5 radius with 5 samples in a cross
 // pattern Improves reprojection for objects in motion
