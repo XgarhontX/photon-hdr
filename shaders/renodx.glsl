@@ -209,7 +209,7 @@ option.RENODX_ACES_RGC = Gamut Compression Blowout
 option.RENODX_ACES_RGC.comment = Compressed color gamut, causing the ACES hue shift blowout.
 
 option.RENODX_ACES_RRT = Reference Rendering Transform
-option.RENODX_ACES_RRT.comment = Prepare colors for Output Device Transform (which is when it is truly tone mapped).
+option.RENODX_ACES_RRT.comment = Prepare colors for Output Device.
 
 option.RENODX_ACES_MIDGRAY = Mid Gray
 option.RENODX_ACES_MIDGRAY.comment = Mid gray output target.
