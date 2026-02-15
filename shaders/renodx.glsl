@@ -2403,7 +2403,10 @@ vec3 ToneMapPass_GT7(vec3 color) {
   //do
   GT7_Config config = GT7_BuildConfig();
   color = GT7_BT2020(color, config);
-  color = min(vec3(config.peak), color); //clamp overshoot
+
+  //clamp overshoot
+  // color = min(vec3(config.peak), color); 
+  // color = ClampByMaxScaling(color, config.peak);
 
   color = ColorSpaceConversion(color, RENODX_CS_BT2020, RENODX_WORKINGCS_AFTERTONEMAP);
 
