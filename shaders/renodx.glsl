@@ -91,7 +91,7 @@ option.RENODX_ENABLED = Enabled
 option.RENODX_ENABLED.comment = Enable HDR.
 
 option.RENODX_BRIGHTNESS_USEREPORTED = Use Reported Values
-option.RENODX_BRIGHTNESS_USEREPORTED.comment = Use values from mods that report the display's capabilities, automatically configuring brightness values.
+option.RENODX_BRIGHTNESS_USEREPORTED.comment = Use values from mods that report the display's capabilities, automatically configuring brightness values. (If sliders don't work, then values are found.)
 value.RENODX_BRIGHTNESS_USEREPORTED.RENODX_BRIGHTNESS_USEREPORTED_ON = If Available
 value.RENODX_BRIGHTNESS_USEREPORTED.RENODX_BRIGHTNESS_USEREPORTED_OFF = Off
 
@@ -177,7 +177,7 @@ option.RENODX_EXPOSURE = Exposure
 option.RENODX_EXPOSURE.comment = Mutltiplier on color right before HDR Tone Map.
 
 value.RENODX_SCALING.RENODX_SCALING_Y = Luminance
-value.RENODX_SCALING.RENODX_SCALING_PERCHANNEL = Per Channel
+value.RENODX_SCALING.RENODX_SCALING_PERCHANNEL = Per Channel or Perceptual
 value.RENODX_SCALING.RENODX_SCALING_MAXCHANNEL = Max Channel
 value.RENODX_SCALING.RENODX_SCALING_AUTO = Automatic
 option.RENODX_SCALING = Scaling
@@ -1096,7 +1096,7 @@ vec3 RCASRenoDX(sampler2D colorTex, ivec2 uv , float sharpness, float paperWhite
     //    h
     // We check for "maxPixelCoord" and "minPixelCoord" to support dynamic resolution scaling. We assume "pixelCoord" is already within the limits.
     vec3 e = WorkingGamma_Encode(texelFetch(colorTex, uv + ivec2( 0, 0), 0).rgb, renodx_gamma);
-    if (sharpness == 0.0f) return e;
+    if (sharpness <= 0.0f) return e;
     e /= paperWhite;
     vec3 b = WorkingGamma_Encode(texelFetch(colorTex, uv + ivec2( 0,-1), 0).rgb, renodx_gamma) / paperWhite;
     vec3 d = WorkingGamma_Encode(texelFetch(colorTex, uv + ivec2(-1, 0), 0).rgb, renodx_gamma) / paperWhite;
