@@ -3169,10 +3169,10 @@ vec3 ToneMapPass(vec3 color_untonemapped, vec3 color_tonemapped, vec2 uv) {
     #ifndef RENODX_UPGRADE_ENABLED
       return result = vec3(0);
     #else
-      return result = color_tonemapped;
+      return result = ColorSpaceConversion(color_tonemapped, RENODX_CS_BT709, RENODX_WORKINGCS_AFTERTONEMAP);;
     #endif
   #elif RENODX_DEBUG == RENODX_DEBUG_SPLIT
-    return result = uv.x < 0.5 ? color_untonemapped : color_tonemapped;
+    return result = uv.x < 0.5 ? color_untonemapped : ColorSpaceConversion(color_tonemapped, RENODX_CS_BT709, RENODX_WORKINGCS_AFTERTONEMAP);
   #endif
 
   //Upgrade
