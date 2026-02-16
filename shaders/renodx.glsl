@@ -90,7 +90,7 @@ screen.renodx_daniele.comment = Daniele Siragusano's compression curve with a lo
 option.RENODX_ENABLED = Enabled
 option.RENODX_ENABLED.comment = Enable HDR.
 
-option.RENODX_BRIGHTNESS_USEREPORTED = Use Reported Values
+option.RENODX_BRIGHTNESS_USEREPORTED = Use Reported Brightness
 option.RENODX_BRIGHTNESS_USEREPORTED.comment = Use values from mods that report the display's capabilities, automatically configuring brightness values. (If sliders don't work, then values are found.)
 value.RENODX_BRIGHTNESS_USEREPORTED.RENODX_BRIGHTNESS_USEREPORTED_ON = If Available
 value.RENODX_BRIGHTNESS_USEREPORTED.RENODX_BRIGHTNESS_USEREPORTED_OFF = Off
