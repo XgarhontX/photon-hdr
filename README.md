@@ -1,6 +1,6 @@
 <h1 align = "center">HDR Installation</h1>
 
-* [Requires rrtt's HDRMod for HDR output]([https://docs.google.com/document/d/1obuYnRTlaqUpiqBq2P6V-_eXvRaSgTB6qboJaC4Fojk/edit?usp=sharing](https://github.com/rrtt217/Minecraft-HDR-Mod))
+* [Requires rrtt's HDRMod for HDR output](https://github.com/rrtt217/Minecraft-HDR-Mod)
 
 [![HDR Screenshot](https://i.postimg.cc/fRMXjbQb/hdrpic-(1).png)](https://postimg.cc/xcFc9nCr)
 
