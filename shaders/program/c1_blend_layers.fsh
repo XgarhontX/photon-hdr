@@ -526,4 +526,7 @@ void main() {
     bloomy_fog = bloomy_fog * 0.5 + 0.5;
 #endif
 #endif
+
+    //max(0)
+    fragment_color = max(fragment_color, vec3(0.0));
 }
