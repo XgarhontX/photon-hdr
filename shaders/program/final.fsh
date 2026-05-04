@@ -295,12 +295,12 @@ void main() {
 #endif
 
 #ifdef DISTANCE_VIEW
-    float depth =
-        texelFetch(depthtex0, ivec2(uv * view_res * taau_render_scale), 0).x;
+    float depth
+        = texelFetch(depthtex0, ivec2(uv * view_res * taau_render_scale), 0).x;
 
     vec3 position_screen = vec3(uv, depth);
-    vec3 position_view =
-        screen_to_view_space(gbufferProjectionInverse, position_screen, true);
+    vec3 position_view
+        = screen_to_view_space(gbufferProjectionInverse, position_screen, true);
 
     bool is_sky = depth == 1.0;
 

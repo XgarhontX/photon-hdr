@@ -27,30 +27,33 @@
 #endif
 #endif
 
-const float sun_luminance =
-    rcp(cone_angle_to_solid_angle(sun_angular_radius)); // luminance of sun disk
+const float sun_luminance = rcp(
+    cone_angle_to_solid_angle(sun_angular_radius)
+); // luminance of sun disk
 const float moon_luminance = 10.0; // luminance of moon disk
 
 vec3 draw_sun(vec3 ray_dir) {
-    // use very strong forward scattering to get a realistic sun edge, also
-    // abuses numerical instability to get good flares
-    float energy = 9000.1 * 10;
     float nu = dot(ray_dir, sun_dir);
-    float r = klein_nishina_phase_area(nu, 0.79 * energy, sun_angular_radius);
-    float g = klein_nishina_phase_area(nu, 1.0 * energy, sun_angular_radius);
-    float b = klein_nishina_phase_area(nu, 1.22 * energy, sun_angular_radius);
-    vec3 phase = vec3(r, g, b);
-    return phase * sun_color * pi / 360.0;
+
+    // Limb darkening model from
+    // http://www.physics.hmc.edu/faculty/esin/a101/limbdarkening.pdf
+    const vec3 alpha = vec3(0.429, 0.522, 0.614);
+    float center_to_edge = max0(sun_angular_radius - fast_acos(nu));
+    vec3 limb_darkening
+        = pow(vec3(1.0 - sqr(1.0 - center_to_edge)), 0.5 * alpha);
+
+    return sun_luminance * sun_color * step(0.0, center_to_edge)
+        * limb_darkening;
 }
 
 vec4 draw_moon(vec3 ray_dir) {
     const float angle = 0.7;
     const mat2 rot = mat2(cos(angle), sin(angle), -sin(angle), cos(angle));
 
-    const vec3 lit_color =
-        vec3(MOON_R, MOON_G <= 0.03 ? 0.0 : MOON_G - 0.03, MOON_B);
-    const vec3 glow_color =
-        vec3(MOON_R <= 0.05 ? 0.0 : MOON_R - 0.05, MOON_G, MOON_B);
+    const vec3 lit_color
+        = vec3(MOON_R, MOON_G <= 0.03 ? 0.0 : MOON_G - 0.03, MOON_B);
+    const vec3 glow_color
+        = vec3(MOON_R <= 0.05 ? 0.0 : MOON_R - 0.05, MOON_G, MOON_B);
 
     // Cut out the moon disc.
     float MoV = dot(ray_dir, moon_dir);
@@ -73,24 +76,25 @@ vec4 draw_moon(vec3 ray_dir) {
     offset = fract(offset + 0.5);
 
     vec3 noise = texture(noisetex, 2.0 * offset).xyz;
-    float moon_texture =
-        pow1d5(noise.x) * 0.75 + 0.6 * cube(noise.y) - 0.1 * noise.z;
+    float moon_texture
+        = pow1d5(noise.x) * 0.75 + 0.6 * cube(noise.y) - 0.1 * noise.z;
 
     // Find the distance to the moon if it were 1 unit away, and its normal.
-    float moon_dist = intersect_sphere(-moon_dir, ray_dir, moon_angular_radius).x;
+    float moon_dist
+        = intersect_sphere(-moon_dir, ray_dir, moon_angular_radius).x;
     vec3 moon_normal = normalize(ray_dir * moon_dist - moon_dir);
 
-	// Get light direction which orbits around moon
-	float light_angle = 0.125 * tau * float(moonPhase);
-	vec3 left_dir = normalize(cross(vec3(0.0, 1.0, 0.0), ray_dir));
-	vec3 light_dir = cos(light_angle) * -ray_dir + sin(light_angle) * left_dir;
+    // Get light direction which orbits around moon
+    float light_angle = 0.125 * tau * float(moonPhase);
+    vec3 left_dir = normalize(cross(vec3(0.0, 1.0, 0.0), ray_dir));
+    vec3 light_dir = cos(light_angle) * -ray_dir + sin(light_angle) * left_dir;
     float moon_shadow = dampen(max0(dot(moon_normal, light_dir)));
 
     float edge_glow = sqr(sqr(sqr(dist)));
 
     vec3 color = max(moon_shadow * lit_color * (1.0 + 4.0 * edge_glow),
-                     0.5 * glow_color * (0.1 + 0.1 * edge_glow)) *
-        (0.2 + 0.8 * moon_texture);
+                     0.5 * glow_color * (0.1 + 0.1 * edge_glow))
+        * (0.2 + 0.8 * moon_texture);
     color = moon_luminance * sqr(color);
     return vec4(color, 1.0);
 }
@@ -104,8 +108,9 @@ vec3 draw_galaxy(vec3 ray_dir, out float galaxy_luminance) {
     float lon = atan(ray_dir.x, ray_dir.z);
     float lat = fast_acos(-ray_dir.y);
 
-    vec3 galaxy =
-        texture(galaxy_sampler, vec2(lon * rcp(tau) + 0.5, lat * rcp(pi))).rgb;
+    vec3 galaxy
+        = texture(galaxy_sampler, vec2(lon * rcp(tau) + 0.5, lat * rcp(pi)))
+              .rgb;
 
     galaxy = srgb_eotf_inv(galaxy) * rec709_to_working_color;
 
@@ -154,14 +159,14 @@ vec3 draw_sky(
     // Sun, moon stars
 
 #if defined PROGRAM_DEFERRED4
-    vec3 skytextured_output =
-        texelFetch(colortex0, ivec2(gl_FragCoord.xy), 0).rgb;
+    vec3 skytextured_output
+        = texelFetch(colortex0, ivec2(gl_FragCoord.xy), 0).rgb;
     sky += texelFetch(colortex0, ivec2(gl_FragCoord.xy), 0).rgb;
 
 #ifdef STARS
     // Stars
-    float stars_visibility =
-        clamp01(1.0 - dot(skytextured_output, vec3(0.33) * 256.0));
+    float stars_visibility
+        = clamp01(1.0 - dot(skytextured_output, vec3(0.33) * 256.0));
     sky += draw_stars(celestial_dir, galaxy_luminance) * stars_visibility;
 #endif
 
@@ -180,8 +185,8 @@ vec3 draw_sky(
 
     // Atmosphere
 
-    sky *= atmosphere_transmittance(ray_dir.y, planet_radius) *
-        (1.0 - rainStrength);
+    sky *= atmosphere_transmittance(ray_dir.y, planet_radius)
+        * (1.0 - rainStrength);
     sky += atmosphere;
 
     // Clouds, aurora, crepuscular rays
@@ -204,8 +209,8 @@ vec3 draw_sky(
 #if !defined PROGRAM_DEFERRED0
     // Fade lower part of sky into cave fog color when underground so that the
     // sky isn't visible beyond the render distance
-    float underground_sky_fade =
-        biome_cave * smoothstep(-0.1, 0.1, 0.4 - ray_dir.y);
+    float underground_sky_fade
+        = biome_cave * smoothstep(-0.1, 0.1, 0.4 - ray_dir.y);
     sky = mix(sky, vec3(0.0), underground_sky_fade);
 #endif
 
@@ -229,12 +234,12 @@ vec4 get_clouds_and_aurora(
 
 #ifndef BLOCKY_CLOUDS
     const vec3 air_viewer_pos = vec3(0.0, planet_radius, 0.0);
-    CloudsResult result =
-        draw_clouds(air_viewer_pos, ray_dir, clear_sky, -1.0, dither);
+    CloudsResult result
+        = draw_clouds(air_viewer_pos, ray_dir, clear_sky, -1.0, dither);
 
     // Lightning flash
-    result.scattering.rgb += LIGHTNING_FLASH_UNIFORM *
-        lightning_flash_intensity * result.scattering.a;
+    result.scattering.rgb += LIGHTNING_FLASH_UNIFORM * lightning_flash_intensity
+        * result.scattering.a;
 #else
     CloudsResult result = clouds_not_hit;
 #endif
@@ -253,8 +258,8 @@ vec4 get_clouds_and_aurora(
     // Crepuscular rays
 
 #if defined CREPUSCULAR_RAYS && !defined BLOCKY_CLOUDS
-    vec4 crepuscular_rays =
-        draw_crepuscular_rays(colortex8, ray_dir, false, 0.5);
+    vec4 crepuscular_rays
+        = draw_crepuscular_rays(colortex8, ray_dir, false, 0.5);
     clouds_and_aurora *= crepuscular_rays.w;
     clouds_and_aurora.rgb += crepuscular_rays.xyz;
 #endif
@@ -272,8 +277,8 @@ vec3 draw_sky(vec3 ray_dir) {
         true
     );
     float clouds_apparent_distance;
-    vec4 clouds_and_aurora =
-        get_clouds_and_aurora(ray_dir, atmosphere, clouds_apparent_distance);
+    vec4 clouds_and_aurora
+        = get_clouds_and_aurora(ray_dir, atmosphere, clouds_apparent_distance);
     return draw_sky(
         ray_dir,
         atmosphere,
@@ -306,8 +311,8 @@ vec3 draw_sun(vec3 ray_dir) {
 
     const vec3 alpha = vec3(0.6, 0.5, 0.4);
     float center_to_edge = max0(sun_angular_radius - r);
-    vec3 limb_darkening =
-        pow(vec3(1.0 - sqr(1.0 - center_to_edge)), 0.5 * alpha);
+    vec3 limb_darkening
+        = pow(vec3(1.0 - sqr(1.0 - center_to_edge)), 0.5 * alpha);
     vec3 sun_disk = vec3(r < sun_angular_radius);
 
     // Solar flare effect
@@ -323,12 +328,12 @@ vec3 draw_sun(vec3 ray_dir) {
     vec2 q = ((ray_dir - sun_dir) * rot).xy;
 
     float theta = fract(
-        linear_step(-pi, pi, atan(q.y, q.x)) + 0.015 * frameTimeCounter -
-        0.33 * r
+        linear_step(-pi, pi, atan(q.y, q.x)) + 0.015 * frameTimeCounter
+        - 0.33 * r
     );
 
-    float flare =
-        texture(noisetex, vec2(theta, r - 0.025 * frameTimeCounter)).x;
+    float flare
+        = texture(noisetex, vec2(theta, r - 0.025 * frameTimeCounter)).x;
     flare = pow5(flare) * exp(-25.0 * (r - sun_angular_radius));
     flare = r < sun_angular_radius ? 0.0 : flare;
 
@@ -338,8 +343,8 @@ vec3 draw_sun(vec3 ray_dir) {
 vec3 draw_sky(vec3 ray_dir) {
     // Sky gradient
 
-    float up_gradient =
-        linear_step(0.0, 0.4, ray_dir.y) + linear_step(0.1, 0.8, -ray_dir.y);
+    float up_gradient
+        = linear_step(0.0, 0.4, ray_dir.y) + linear_step(0.1, 0.8, -ray_dir.y);
     vec3 sky = ambient_color * mix(0.1, 0.04, up_gradient);
     float mie_phase = cornette_shanks_phase(dot(ray_dir, sun_dir), 0.6);
     sky += 0.1 * (ambient_color + 0.5 * end_sun_color) * mie_phase;
@@ -353,9 +358,9 @@ vec3 draw_sky(vec3 ray_dir) {
 
     // Stars
 
-    vec3 stars_fade =
-        exp2(-0.1 * max0(1.0 - ray_dir.y) / max(ambient_color, eps)) *
-        linear_step(-0.2, 0.0, ray_dir.y);
+    vec3 stars_fade
+        = exp2(-0.1 * max0(1.0 - ray_dir.y) / max(ambient_color, eps))
+        * linear_step(-0.2, 0.0, ray_dir.y);
     sky += draw_stars(ray_dir, 0.0).xzy * stars_fade;
 #endif
 
